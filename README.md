@@ -7,35 +7,29 @@ This project appears to be a Deno-based server application that serves as an API
 ### Multi Feed
 
 - **Method**: `GET`
-- **URL**: `https://reddit-rss-api.deno.dev/r/{subreddit1+subreddit2+...}`
+- **URL**: `http://reddit-rss-api.deno.dev/r/{subreddit1+subreddit2+...}`
 - **Description**: This endpoint fetches posts from multiple subreddits, specified in the URL as a `+`-delimited list.
 - **Example**: To fetch posts from both `memes` and `dankmemes` subreddits, the request would be:
   
-  ``
-  https://reddit-rss-api.deno.dev/r/memes+dankmemes
-  ``
+  [https://reddit-rss-api.deno.dev/r/memes+dankmemes](http://reddit-rss-api.deno.dev/r/memes+dankmemes)
 
 ### Single Feed
 
 - **Method**: `GET`
-- **URL**: `https://reddit-rss-api.deno.dev/r/{subreddit}`
+- **URL**: `http://reddit-rss-api.deno.dev/r/{subreddit}`
 - **Description**: This endpoint fetches posts from a single subreddit specified in the URL.
 - **Example**: To fetch posts from the `memes` subreddit, the request would be:
   
-  ``
-  https://reddit-rss-api.deno.dev/r/memes
-  ``
+  [https://reddit-rss-api.deno.dev/r/memes](http://reddit-rss-api.deno.dev/r/memes)
 
 ### Random Post
 
 - **Method**: `GET`
-- **URL**: `https://reddit-rss-api.deno.dev/r/{subreddit1+subreddit2+...}?option=random`
+- **URL**: `http://reddit-rss-api.deno.dev/r/{subreddit1+subreddit2+...}?option=random`
 - **Description**: This endpoint fetches a random post from one or more subreddits. Subreddits are specified in the URL as a `+`-delimited list. The `option=random` query parameter must be included.
 - **Example**: To fetch a random post from the `memes` subreddit, the request would be:
   
-  ``
-  https://reddit-rss-api.deno.dev/r/memes?option=random
-  ``
+  [https://reddit-rss-api.deno.dev/r/memes?option=random](http://reddit-rss-api.deno.dev/r/memes?option=random)
 
 ### Query Parameters
 
