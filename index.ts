@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
     const feedUrl = constructRedditFeedUrl(pathnames);
     const option = url.searchParams.get("option");
     if (option === "random") {
-      const data = await getRandomPost(pathnames[1]);
+      const data = await getRandomPost(pathnames[1].split("+"));
       return sendOKResponse(data);
     }
     data = await parseRSSFeed(feedUrl);

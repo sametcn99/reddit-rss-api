@@ -54,12 +54,9 @@ export function extractAttributes(
 }
 
 export async function getRandomPost(
-  subreddits: string
+  subreddits: string[]
 ): Promise<ExtractedItem> {
-  const feedUrl = `https://www.reddit.com/r/${subreddits.replace(
-    ",",
-    "+"
-  )}/.rss`;
+  const feedUrl = `https://www.reddit.com/r/${subreddits.join("+")}/.rss`;
   const data = await parseRSSFeed(feedUrl);
   const randomIndex = Math.floor(Math.random() * data.items.length);
   const randomPost = data.items[randomIndex];
