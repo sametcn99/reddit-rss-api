@@ -20,20 +20,13 @@ Deno.serve(async (req) => {
 
   let data: ResponseData[] | ResponseData | ExtractedItem;
 
-  if (pathnames[0] === "random") {
-    const subreddits = url.searchParams.get("subreddits");
-    if (!subreddits) {
-      return sendBadRequestResponse();
-    }
-    data = await getRandomPost(subreddits);
-    if (!data) {
-      return sendBadRequestResponse();
-    }
-    return sendOKResponse(data);
-  }
-
   if (isSubredditPath(pathnames)) {
     const feedUrl = constructRedditFeedUrl(pathnames);
+    const option = url.searchParams.get("option");
+    if (option === "random") {
+      const data = await getRandomPost(pathnames[1]);
+      return sendOKResponse(data);
+    }
     data = await parseRSSFeed(feedUrl);
     return sendOKResponse(data);
   }
