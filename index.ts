@@ -4,6 +4,7 @@ import { corsHeaders } from "./src/lib/lib.ts";
 import { parseRSSFeed } from "./src/utils/fetch.ts";
 import {
   logRequestBody,
+  getReadme,
   sendBadRequestResponse,
   sendOKResponse,
 } from "./src/utils/utils.ts";
@@ -19,6 +20,18 @@ Deno.serve(async (req) => {
   const pathnames = url.pathname.split("/").filter(Boolean);
 
   let data: ResponseData[] | ResponseData | ExtractedItem;
+
+  if (pathnames.length === 0) {
+    const readmeText = await getReadme();
+    return new Response(readmeText, {
+      headers: {
+        "Content-Type": "text/html",
+        ...corsHeaders,
+      },
+      status: 200,
+      statusText: "OK",
+    });
+  }
 
   if (isSubredditPath(pathnames)) {
     const feedUrl = constructRedditFeedUrl(pathnames);

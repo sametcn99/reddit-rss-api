@@ -1,4 +1,5 @@
 import { corsHeaders } from "../lib/lib.ts";
+import { Marked } from "npm:@ts-stack/markdown";
 
 /**
  * Logs the request body if it exists.
@@ -26,8 +27,14 @@ export function sendBadRequestResponse(): Response {
   });
 }
 
+/**
+ * Sends an OK response with the provided data.
+ *
+ * @param data - The data to be sent in the response.
+ * @returns The response object.
+ */
 export function sendOKResponse(
-  data: ExtractedItem | ResponseData[] | ResponseData
+  data: ExtractedItem | ResponseData[] | ResponseData | string
 ): Response {
   return new Response(JSON.stringify(data), {
     headers: {
@@ -37,4 +44,15 @@ export function sendOKResponse(
     status: 200,
     statusText: "OK",
   });
+}
+
+/**
+ * Retrieves the content of the README.md file and parses it into markup.
+ * @returns The parsed markup of the README.md file.
+ */
+export async function getReadme() {
+  const decoder = new TextDecoder("utf-8");
+  const markdown = decoder.decode(await Deno.readFile("README.md"));
+  const markup = Marked.parse(markdown);
+  return markup;
 }
