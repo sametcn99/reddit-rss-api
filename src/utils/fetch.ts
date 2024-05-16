@@ -23,12 +23,13 @@ export async function parseRSSFeed(RSS_FEED_URL: string) {
       throw new Error(`No items found in the RSS feed.`);
     }
 
-    const extractedItems = extractItems(feed.items);
+    const extractedItems = extractItems(feed.items, feed);
     const responseData: ResponseData = {
       title: feed.title,
       lastBuildDate: feed.lastBuildDate,
       link: feed.link,
       feedUrl: feed.feedUrl,
+      itemsLength: feed.items.length,
       items: extractedItems,
     };
     return responseData;

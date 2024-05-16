@@ -22,6 +22,7 @@ type ExtractedItem = {
   link: string;
   author: string;
   isoDate: Date;
+  feedURL?: string;
   id: string;
   links: string[];
   images: string[];
@@ -33,5 +34,6 @@ type ResponseData = {
   lastBuildDate: Date;
   link: string;
   feedUrl: string;
+  itemsLength?: number;
   items: ExtractedItem[];
 };

@@ -25,3 +25,16 @@ export function sendBadRequestResponse(): Response {
     statusText: "Bad Request",
   });
 }
+
+export function sendOKResponse(
+  data: ExtractedItem | ResponseData[] | ResponseData
+): Response {
+  return new Response(JSON.stringify(data), {
+    headers: {
+      "Content-Type": "application/json",
+      ...corsHeaders,
+    },
+    status: 200,
+    statusText: "OK",
+  });
+}

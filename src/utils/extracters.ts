@@ -1,4 +1,5 @@
 import { HTMLElement, parse } from "npm:node-html-parser";
+import { parseRSSFeed } from "./fetch.ts";
 
 /**
  * Extracts relevant information from an array of feed items.
@@ -6,7 +7,7 @@ import { HTMLElement, parse } from "npm:node-html-parser";
  * @returns An array of extracted items containing the title, link, author, isoDate, id, links, and images.
  * @throws An error if no content is found in the RSS feed.
  */
-export function extractItems(items: FeedItem[]): ExtractedItem[] {
+export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
   return items.map((item) => {
     if (!item.content) {
       throw new Error(`No content found in the RSS feed.`);
@@ -19,6 +20,7 @@ export function extractItems(items: FeedItem[]): ExtractedItem[] {
       author: item.author,
       isoDate: item.isoDate,
       id: item.id,
+      feedURL: feed.feedUrl,
       links,
       images,
     };
@@ -49,4 +51,17 @@ export function extractAttributes(
   attribute: string
 ): string[] {
   return elements.map((element) => element.getAttribute(attribute) || "");
+}
+
+export async function getRandomPost(
+  subreddits: string
+): Promise<ExtractedItem> {
+  const feedUrl = `https://www.reddit.com/r/${subreddits.replace(
+    ",",
+    "+"
+  )}/.rss`;
+  const data = await parseRSSFeed(feedUrl);
+  const randomIndex = Math.floor(Math.random() * data.items.length);
+  const randomPost = data.items[randomIndex];
+  return randomPost;
 }
