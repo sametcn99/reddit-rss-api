@@ -18,19 +18,18 @@ Deno.serve(async (req) => {
   const url = new URL(req.url);
   const pathnames = url.pathname.split("/").filter(Boolean);
 
-  let data: ResponseData[] | ResponseData;
-  let randomPost: ExtractedItem;
+  let data: ResponseData[] | ResponseData | ExtractedItem;
 
   if (pathnames[0] === "random") {
     const subreddits = url.searchParams.get("subreddits");
     if (!subreddits) {
       return sendBadRequestResponse();
     }
-    randomPost = await getRandomPost(subreddits);
-    if (!randomPost) {
+    data = await getRandomPost(subreddits);
+    if (!data) {
       return sendBadRequestResponse();
     }
-    return sendOKResponse(randomPost);
+    return sendOKResponse(data);
   }
 
   if (isSubredditPath(pathnames)) {
