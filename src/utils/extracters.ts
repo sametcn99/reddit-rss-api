@@ -53,10 +53,7 @@ export function extractAttributes(
   return elements.map((element) => element.getAttribute(attribute) || "");
 }
 
-export async function getRandomPost(
-  subreddits: string[]
-): Promise<ExtractedItem> {
-  const feedUrl = `https://www.reddit.com/r/${subreddits.join("+")}/.rss`;
+export async function getRandomPost(feedUrl: string): Promise<ExtractedItem> {
   const data = await parseRSSFeed(feedUrl);
   const randomIndex = Math.floor(Math.random() * data.items.length);
   const randomPost = data.items[randomIndex];
