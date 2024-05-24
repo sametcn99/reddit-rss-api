@@ -62,7 +62,7 @@ Sure, here is the list of URLs with their corresponding descriptions:
 
 - **option**: This query parameter can be set to `random` to fetch a random post from the specified subreddit(s).
 - **sort**: This query parameter can be sort asc or desc specified subreddit(s).
-- **filter** Get Image Posts from feeds.
-- **merge** This query paramater can be merge items from multiple subreddit(s). Usefull for getting more posts from feeds.
+- **filter**: Get Image Posts from feeds.
+- **merge**: This query paramater can be merge items from multiple subreddit(s). Usefull for getting more posts from feeds.
 
 [Source Code](https://github.com/sametcn99/reddit-rss-api)
