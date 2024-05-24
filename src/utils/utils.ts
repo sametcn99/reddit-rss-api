@@ -1,5 +1,6 @@
 import { corsHeaders } from "../lib/lib.ts";
 import { Marked } from "npm:@ts-stack/markdown";
+import { parseRSSFeed } from "./fetch.ts";
 
 /**
  * Logs the request body if it exists.
@@ -55,4 +56,23 @@ export async function getReadme() {
   const markdown = decoder.decode(await Deno.readFile("README.md"));
   const markup = Marked.parse(markdown);
   return markup;
+}
+
+export async function mergedSubreddits(feedUrls: string[], pathnames: string) {
+  const subreddits = pathnames.split("+");
+  let data: ResponseData = {
+    title: `Merged feed for ${subreddits.join(" + ")}`,
+    lastBuildDate: new Date(),
+    link: `https://reddit-rss-api.deno.dev/r/${pathnames}`,
+    feedUrl: "https://reddit-rss-api.deno.dev/",
+    items: [],
+  };
+  for (const feedUrl of feedUrls) {
+    const feedData = await parseRSSFeed(feedUrl);
+    data = {
+      ...data,
+      items: data.items.concat(feedData.items),
+    };
+  }
+  return data;
 }

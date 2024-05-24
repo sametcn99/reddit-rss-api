@@ -53,9 +53,19 @@ export function extractAttributes(
   return elements.map((element) => element.getAttribute(attribute) || "");
 }
 
-export async function getRandomPost(feedUrl: string): Promise<ExtractedItem> {
+export async function getRandomPost(
+  feedUrl: string,
+  filter: string | null
+): Promise<ExtractedItem> {
   const data = await parseRSSFeed(feedUrl);
   const randomIndex = Math.floor(Math.random() * data.items.length);
-  const randomPost = data.items[randomIndex];
+  let randomPost = data.items[randomIndex];
+  if (filter === "image") {
+    const filteredItems = data.items.filter(
+      (item) => item.images !== undefined && item.images.length > 0
+    );
+    const randomIndex = Math.floor(Math.random() * filteredItems.length);
+    randomPost = filteredItems[randomIndex];
+  }
   return randomPost;
 }

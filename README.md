@@ -4,35 +4,65 @@ This project appears to be a Deno-based server application that serves as an API
 
 ## API Endpoints
 
-### Multi Feed
+Sure, here is the list of URLs with their corresponding descriptions:
 
-- **Method**: `GET`
-- **URL**: `http://reddit-rss-api.deno.dev/r/{subreddit1+subreddit2+...}`
-- **Description**: This endpoint fetches posts from multiple subreddits, specified in the URL as a `+`-delimited list.
-- **Example**: To fetch posts from both `memes` and `dankmemes` subreddits, the request would be:
+1. **Multi Feed**
+   - URL: `https://reddit-rss-api.deno.dev/r/memes+dankmemes`
+
+2. **Single Feed**
+   - URL: `https://reddit-rss-api.deno.dev/r/memes`
+
+3. **Home**
+   - URL: `https://reddit-rss-api.deno.dev`
+
+4. **Random Post**
+   - URL: `https://reddit-rss-api.deno.dev/r/memes?option=random`
+   - Query Params: 
+     - `option`: `random`
+
+5. **Sort Descending**
+   - URL: `https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc`
+   - Query Params:
+     - `sort`: `desc`
+
+6. **Sort Ascending**
+   - URL: `https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc`
+   - Query Params:
+     - `sort`: `asc`
+
+7. **Filter Image**
+   - URL: `https://reddit-rss-api.deno.dev/r/turkey?filter=image`
+   - Query Params:
+     - `filter`: `image`
+
+8. **Random Image Post**
+   - URL: `https://reddit-rss-api.deno.dev/r/turkey?filter=image&option=random`
+   - Query Params:
+     - `filter`: `image`
+     - `option`: `random`
+
+9. **Merged Feeds**
+   - URL: `https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true`
+   - Query Params:
+     - `merge`: `true`
+
+10. **Random Post from Merged**
+    - URL: `https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&option=random`
+    - Query Params:
+      - `merge`: `true`
+      - `option`: `random`
+
+11. **Filter Image from Merged**
+    - URL: `https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&filter=image`
+    - Query Params:
+      - `merge`: `true`
+      - `filter`: `image`
   
-  [https://reddit-rss-api.deno.dev/r/memes+dankmemes](http://reddit-rss-api.deno.dev/r/memes+dankmemes)
-
-### Single Feed
-
-- **Method**: `GET`
-- **URL**: `http://reddit-rss-api.deno.dev/r/{subreddit}`
-- **Description**: This endpoint fetches posts from a single subreddit specified in the URL.
-- **Example**: To fetch posts from the `memes` subreddit, the request would be:
-  
-  [https://reddit-rss-api.deno.dev/r/memes](http://reddit-rss-api.deno.dev/r/memes)
-
-### Random Post
-
-- **Method**: `GET`
-- **URL**: `http://reddit-rss-api.deno.dev/r/{subreddit1+subreddit2+...}?option=random`
-- **Description**: This endpoint fetches a random post from one or more subreddits. Subreddits are specified in the URL as a `+`-delimited list. The `option=random` query parameter must be included.
-- **Example**: To fetch a random post from the `memes` subreddit, the request would be:
-  
-  [https://reddit-rss-api.deno.dev/r/memes?option=random](http://reddit-rss-api.deno.dev/r/memes?option=random)
-
 ### Query Parameters
 
 - **option**: This query parameter can be set to `random` to fetch a random post from the specified subreddit(s).
+- **sort**: This query parameter can be sort asc or desc specified subreddit(s).
+- **filter** Get Image Posts from feeds.
+- **merge** This query paramater can be merge items from multiple subreddit(s). Usefull for getting more posts from feeds.
 
 [Source Code](https://github.com/sametcn99/reddit-rss-api)

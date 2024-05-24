@@ -31,6 +31,29 @@ export function constructRedditFeedUrl(pathnames: string[]): string {
   return `https://www.reddit.com/${pathnames[0]}/${pathnames[1]}/.rss`;
 }
 
+/**
+ * Checks if the given pathnames represent multiple subreddits.
+ *
+ * @param pathnames - An array of pathnames.
+ * @returns A boolean indicating whether the pathnames represent multiple subreddits.
+ */
 export function checkForMultipleSubreddits(pathnames: string[]): boolean {
   return pathnames[1].includes("+");
+}
+
+/**
+ * Extracts the individual subreddits from the given pathnames.
+ *
+ * @param pathnames - An array of pathnames.
+ * @returns An array of strings containing the individual subreddits.
+ */
+export function extractSubreddits(pathnames: string): string[] {
+  return pathnames.split("+");
+}
+
+export function constrsuctMergedFeedUrls(subreddits: string): string[] {
+  const subredditsArray = extractSubreddits(subreddits);
+  return subredditsArray.map((subreddit) =>
+    constructRedditFeedUrl(["r", subreddit])
+  );
 }

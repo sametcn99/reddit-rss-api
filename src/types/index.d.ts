@@ -22,7 +22,7 @@ type ExtractedItem = {
   link: string;
   author: string;
   isoDate: Date;
-  feedURL?: string;
+  feedURL: string;
   id: string;
   links: string[];
   images: string[];
