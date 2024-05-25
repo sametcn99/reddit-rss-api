@@ -48,7 +48,7 @@ export async function handleResponse(
   url: URL,
   feedUrl: string,
   data: ResponseData[] | ResponseData | ExtractedItem
-): Promise<ResponseData[] | ResponseData | ExtractedItem> {
+): Promise<ResponseData | ExtractedItem> {
   const { option, sort, filter, merge } = getQueryParams(url);
 
   if (option === "random") {
@@ -75,5 +75,5 @@ export async function handleResponse(
     data = await parseRSSFeed(feedUrl);
     return data;
   }
-  return data as ResponseData[] | ResponseData | ExtractedItem;
+  return data as ResponseData | ExtractedItem;
 }

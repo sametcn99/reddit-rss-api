@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
   const url = new URL(req.url);
   const pathnames = url.pathname.split("/").filter(Boolean);
 
-  let data: ResponseData[] | ResponseData | ExtractedItem;
+  let data: ResponseData | ExtractedItem;
 
   if (pathnames.length === 0) {
     const readmeText = await getReadme();
