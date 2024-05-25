@@ -2,11 +2,15 @@
 	"lock": false,
 	"tasks": {
 		"start": "deno run -A index.ts",
-		"dev": "deno run -A --watch index.ts"
+		"dev": "deno run -A --watch index.ts",
+		"test": "deno test -A src/tests/tests.ts"
 	},
 	"compilerOptions": {
 		"strict": true,
-		"checkJs": true
+		"checkJs": true,
+		"types": [
+			"./src/types/types.d.ts"
+		]
 	},
 	"fmt": {
 		"useTabs": true,

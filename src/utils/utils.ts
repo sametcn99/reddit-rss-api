@@ -62,20 +62,24 @@ export async function mergedSubreddits(
   feedUrls: string[],
   pathnames: string
 ): Promise<ResponseData> {
-  const subreddits = pathnames.split("+");
-  let data: ResponseData = {
-    title: `Merged feed for ${subreddits.join(" + ")}`,
-    lastBuildDate: new Date(),
-    link: `https://reddit-rss-api.deno.dev/r/${pathnames}`,
-    feedUrl: "https://reddit-rss-api.deno.dev/",
-    items: [],
-  };
-  for (const feedUrl of feedUrls) {
-    const feedData = await parseRSSFeed(feedUrl);
-    data = {
-      ...data,
-      items: data.items.concat(feedData.items),
+  try {
+    const subreddits = pathnames.split("+");
+    let data: ResponseData = {
+      title: `Merged feed for ${subreddits.join(" + ")}`,
+      lastBuildDate: new Date(),
+      link: `https://reddit-rss-api.deno.dev/r/${pathnames}`,
+      feedUrl: "https://reddit-rss-api.deno.dev/",
+      items: [],
     };
+    for (const feedUrl of feedUrls) {
+      const feedData = await parseRSSFeed(feedUrl);
+      data = {
+        ...data,
+        items: data.items.concat(feedData.items),
+      };
+    }
+    return data;
+  } catch (error) {
+    throw new Error(`Failed to fetch the RSS feed.`);
   }
-  return data;
 }
