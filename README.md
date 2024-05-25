@@ -52,7 +52,14 @@ Here is a list of URLs with their corresponding descriptions:
       - `merge`: `true`
       - `option`: `random`
 
-11. **Filter Image from Merged**
+11. **Random Image Post from Merged**
+    - URL: [http://localhost:8000/r/memes+dankmemes?filter=image&option=random&merge=true](http://localhost:8000/r/memes+dankmemes?filter=image&option=random&merge=true)
+    - Query Params:
+      - `merge`: `true`
+      - `option`: `random`
+      - `filter`: `image`
+
+12. **Filter Image from Merged**
     - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&filter=image](https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&filter=image)
     - Query Params:
       - `merge`: `true`
