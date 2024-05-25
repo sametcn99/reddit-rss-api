@@ -1,7 +1,7 @@
 import { parseRSSFeed } from "./fetch.ts";
 import { mergedSubreddits } from "./utils.ts";
 
-export function handleFılterImages(data: ResponseData) {
+export function handleFılterImages(data: ResponseData): ResponseData {
   data.items = data.items.filter(
     (item) => item.images !== undefined && item.images.length > 0
   );
@@ -9,13 +9,13 @@ export function handleFılterImages(data: ResponseData) {
   return data;
 }
 
-export function handleRandomPost(data: ResponseData) {
+export function handleRandomPost(data: ResponseData): ExtractedItem {
   const randomIndex = Math.floor(Math.random() * data.items.length);
   const randomPost = data.items[randomIndex];
   return randomPost;
 }
 
-export function handleSort(data: ResponseData, sort: string) {
+export function handleSort(data: ResponseData, sort: string): ResponseData {
   data.items = data.items.sort((a, b) => {
     if (sort === "asc" || sort === undefined) {
       return a.isoDate > b.isoDate ? 1 : -1;
@@ -31,7 +31,12 @@ export function handleMerge(feedUrls: string[], path: string) {
   return mergedSubreddits(feedUrls, path);
 }
 
-export function getQueryParams(url: URL) {
+export function getQueryParams(url: URL): {
+  option: string | null;
+  sort: string | null;
+  filter: string | null;
+  merge: string | null;
+} {
   const option = url.searchParams.get("option");
   const sort = url.searchParams.get("sort");
   const filter = url.searchParams.get("filter");
