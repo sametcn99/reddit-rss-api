@@ -12,13 +12,7 @@ import {
   sendOKResponse,
   mergedSubreddits,
 } from "./src/utils/utils.ts";
-import { getRandomPost } from "./src/utils/extracters.ts";
-import {
-  handleFılterImages,
-  getQueryParams,
-  handleRandomPost,
-  handleSort,
-} from "./src/utils/handlers.ts";
+import { getQueryParams } from "./src/utils/handlers.ts";
 import { handleResponse } from "./src/utils/handlers.ts";
 
 Deno.serve(async (req) => {
