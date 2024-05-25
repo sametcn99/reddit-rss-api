@@ -71,13 +71,16 @@ export async function mergedSubreddits(
       feedUrl: "https://reddit-rss-api.deno.dev/",
       items: [],
     };
-    for (const feedUrl of feedUrls) {
-      const feedData = await parseRSSFeed(feedUrl);
+
+    const feedDataPromises = feedUrls.map((feedUrl) => parseRSSFeed(feedUrl));
+    const feedDataArray = await Promise.all(feedDataPromises);
+    for (const feedData of feedDataArray) {
       data = {
         ...data,
         items: data.items.concat(feedData.items),
       };
     }
+    data.itemsLength = data.items.length;
     return data;
   } catch (error) {
     throw new Error(`Failed to fetch the RSS feed.`);

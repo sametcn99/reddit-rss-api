@@ -3,7 +3,6 @@ import { mergedSubreddits } from "./utils.ts";
 
 export function handleFılterImages(data: ResponseData): ResponseData {
   data.items = data.items.filter((item) => item.images.length > 0);
-  console.log(data.items.length);
   data.itemsLength = data.items.length;
   return data;
 }
@@ -49,24 +48,18 @@ export async function handleResponse(
   data: ResponseData | ExtractedItem
 ): Promise<ResponseData | ExtractedItem> {
   const { option, sort, filter, merge } = getQueryParams(url);
-
-  if (option === "random") {
-    data = await parseRSSFeed(feedUrl);
-    if (filter === "image") {
-      data = handleFılterImages(data);
-    }
-    data = handleRandomPost(data);
-    return data;
-  }
   if (sort) {
     data = await parseRSSFeed(feedUrl);
     data = handleSort(data, sort);
-    return data;
   }
   if (filter === "image") {
     data = handleFılterImages(data as ResponseData);
-    return data;
   }
+  if (option === "random") {
+    data = await parseRSSFeed(feedUrl);
+    data = handleRandomPost(data);
+  }
+
   if (!merge && !option && !sort && !filter) {
     data = await parseRSSFeed(feedUrl);
     return data;
