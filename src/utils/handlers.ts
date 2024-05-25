@@ -48,7 +48,7 @@ export async function handleResponse(
   url: URL,
   feedUrl: string,
   data: ResponseData[] | ResponseData | ExtractedItem
-): Promise<ResponseData | ExtractedItem> {
+): Promise<ResponseData[] | ResponseData | ExtractedItem> {
   const { option, sort, filter, merge } = getQueryParams(url);
 
   if (option === "random") {
@@ -65,13 +65,15 @@ export async function handleResponse(
     return data;
   }
   if (filter === "image") {
-    data = await parseRSSFeed(feedUrl);
-    data = handleFılterImages(data);
-    return data;
+    // check data type if it is ResponseData
+    if ("feed" in data) {
+      data = handleFılterImages(data);
+      return data;
+    }
   }
   if (!merge && !option && !sort && !filter) {
     data = await parseRSSFeed(feedUrl);
     return data;
   }
-  return data as ResponseData | ExtractedItem;
+  return data as ResponseData[] | ResponseData | ExtractedItem;
 }
