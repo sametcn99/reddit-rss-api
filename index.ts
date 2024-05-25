@@ -40,16 +40,12 @@ Deno.serve(async (req) => {
 
   if (isSubredditPath(pathnames)) {
     const feedUrl = constructRedditFeedUrl(pathnames);
-    const { merge } = getQueryParams(url);
-    if (merge === "true") {
-      const feedUrls = constrsuctMergedFeedUrls(pathnames[1]);
-      data = await mergedSubreddits(feedUrls, pathnames[1]);
-      data = await handleResponse(url, feedUrl, data);
+    try {
+      data = await handleResponse(url, feedUrl, pathnames);
       return sendOKResponse(data);
+    } catch (error) {
+      return sendBadRequestResponse();
     }
-    data = await parseRSSFeed(feedUrl);
-    data = await handleResponse(url, feedUrl, data);
-    return sendOKResponse(data);
   }
   return sendBadRequestResponse();
 });

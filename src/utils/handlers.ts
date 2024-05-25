@@ -1,5 +1,6 @@
 import { parseRSSFeed } from "./fetch.ts";
 import { mergedSubreddits } from "./utils.ts";
+import { constrsuctMergedFeedUrls } from "./validators.ts";
 
 export function handleFılterImages(data: ResponseData): ResponseData {
   data.items = data.items.filter((item) => item.images.length > 0);
@@ -45,24 +46,50 @@ export function getQueryParams(url: URL): {
 export async function handleResponse(
   url: URL,
   feedUrl: string,
-  data: ResponseData | ExtractedItem
+  pathnames: string[]
 ): Promise<ResponseData | ExtractedItem> {
   const { option, sort, filter, merge } = getQueryParams(url);
-  if (sort) {
+
+  let data: ResponseData | ExtractedItem;
+
+  data = {
+    title: "",
+    lastBuildDate: new Date(),
+    link: "",
+    feedUrl: "",
+    items: [],
+    itemsLength: 0,
+    feed: {
+      title: "",
+      lastBuildDate: new Date(),
+      link: "",
+      feedUrl: "",
+      items: [],
+    },
+  };
+
+  if (merge === "true") {
+    const feedUrls = constrsuctMergedFeedUrls(pathnames[1]);
+    data = await mergedSubreddits(feedUrls, pathnames[1]);
+  } else if (merge !== "true" && merge !== null && merge !== "false") {
+    throw new Error("Invalid merge option. Use 'true' as merge option.");
+  } else if (merge === "false" || merge === null) {
     data = await parseRSSFeed(feedUrl);
+  }
+  if (sort) {
     data = handleSort(data, sort);
+  } else if (sort !== "asc" && sort !== "desc" && sort !== null) {
+    throw new Error("Invalid filter option. Use 'image' as filter option.");
   }
   if (filter === "image") {
     data = handleFılterImages(data as ResponseData);
+  } else if (filter !== "image" && filter !== null) {
+    throw new Error("Invalid filter option. Use 'image' as filter option.");
   }
   if (option === "random") {
-    data = await parseRSSFeed(feedUrl);
     data = handleRandomPost(data);
-  }
-
-  if (!merge && !option && !sort && !filter) {
-    data = await parseRSSFeed(feedUrl);
-    return data;
+  } else if (option !== "random" && option !== null) {
+    throw new Error("Invalid option. Use 'random' as option.");
   }
   return data as ResponseData | ExtractedItem;
 }
