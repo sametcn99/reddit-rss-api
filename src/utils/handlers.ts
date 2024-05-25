@@ -69,6 +69,9 @@ export async function handleResponse(
     data = handleFılterImages(data);
     return data;
   }
-  data = await parseRSSFeed(feedUrl);
-  return data;
+  if (!merge && !option && !sort && !filter) {
+    data = await parseRSSFeed(feedUrl);
+    return data;
+  }
+  return data as ResponseData | ExtractedItem;
 }
