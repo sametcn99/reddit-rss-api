@@ -13,6 +13,13 @@ import {
   mergedSubreddits,
 } from "./src/utils/utils.ts";
 import { getRandomPost } from "./src/utils/extracters.ts";
+import {
+  handleFılterImages,
+  getQueryParams,
+  handleRandomPost,
+  handleSort,
+} from "./src/utils/handlers.ts";
+import { handleResponse } from "./src/utils/handlers.ts";
 
 Deno.serve(async (req) => {
   logRequestBody(req);
@@ -39,65 +46,16 @@ Deno.serve(async (req) => {
 
   if (isSubredditPath(pathnames)) {
     const feedUrl = constructRedditFeedUrl(pathnames);
-    const option = url.searchParams.get("option");
-    const sort = url.searchParams.get("sort");
-    const filter = url.searchParams.get("filter");
-    const merge = url.searchParams.get("merge");
+    const { merge } = getQueryParams(url);
     if (merge === "true") {
       const feedUrls = constrsuctMergedFeedUrls(pathnames[1]);
       data = await mergedSubreddits(feedUrls, pathnames[1]);
-      if (option === "random") {
-        const randomIndex = Math.floor(Math.random() * data.items.length);
-        let randomPost = data.items[randomIndex];
-        if (filter === "image") {
-          const filteredItems = data.items.filter(
-            (item) => item.images !== undefined && item.images.length > 0
-          );
-          const randomIndex = Math.floor(Math.random() * filteredItems.length);
-          randomPost = filteredItems[randomIndex];
-        }
-        return sendOKResponse(randomPost);
-      }
-      if (sort) {
-        data.items = data.items.sort((a, b) => {
-          if (sort === "asc" || sort === undefined) {
-            return a.isoDate > b.isoDate ? 1 : -1;
-          } else {
-            // sort === "desc"
-            return a.isoDate < b.isoDate ? 1 : -1;
-          }
-        });
-        return sendOKResponse(data);
-      }
-      return sendOKResponse(data);
-    }
-    if (option === "random") {
-      data = await getRandomPost(feedUrl, filter);
-      return sendOKResponse(data);
-    }
-    if (sort) {
-      data = await parseRSSFeed(feedUrl);
-      data.items = data.items.sort((a, b) => {
-        if (sort === "asc" || sort === undefined) {
-          return a.isoDate > b.isoDate ? 1 : -1;
-        } else {
-          // sort === "desc"
-          return a.isoDate < b.isoDate ? 1 : -1;
-        }
-      });
-      return sendOKResponse(data);
-    }
-    if (filter === "image") {
-      data = await parseRSSFeed(feedUrl);
-      data.items = data.items.filter(
-        (item) => item.images !== undefined && item.images.length > 0
-      );
-      data.itemsLength = data.items.length;
+      data = await handleResponse(url, feedUrl, data);
       return sendOKResponse(data);
     }
     data = await parseRSSFeed(feedUrl);
+    data = await handleResponse(url, feedUrl, data);
     return sendOKResponse(data);
   }
-
   return sendBadRequestResponse();
 });

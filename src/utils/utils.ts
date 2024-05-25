@@ -51,14 +51,17 @@ export function sendOKResponse(
  * Retrieves the content of the README.md file and parses it into markup.
  * @returns The parsed markup of the README.md file.
  */
-export async function getReadme() {
+export async function getReadme(): Promise<string> {
   const decoder = new TextDecoder("utf-8");
   const markdown = decoder.decode(await Deno.readFile("README.md"));
   const markup = Marked.parse(markdown);
   return markup;
 }
 
-export async function mergedSubreddits(feedUrls: string[], pathnames: string) {
+export async function mergedSubreddits(
+  feedUrls: string[],
+  pathnames: string
+): Promise<ResponseData> {
   const subreddits = pathnames.split("+");
   let data: ResponseData = {
     title: `Merged feed for ${subreddits.join(" + ")}`,
