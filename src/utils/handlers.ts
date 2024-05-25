@@ -2,9 +2,8 @@ import { parseRSSFeed } from "./fetch.ts";
 import { mergedSubreddits } from "./utils.ts";
 
 export function handleFılterImages(data: ResponseData): ResponseData {
-  data.items = data.items.filter(
-    (item) => item.images !== undefined && item.images.length > 0
-  );
+  data.items = data.items.filter((item) => item.images.length > 0);
+  console.log(data.items.length);
   data.itemsLength = data.items.length;
   return data;
 }
@@ -47,7 +46,7 @@ export function getQueryParams(url: URL): {
 export async function handleResponse(
   url: URL,
   feedUrl: string,
-  data: ResponseData[] | ResponseData | ExtractedItem
+  data: ResponseData | ExtractedItem
 ): Promise<ResponseData | ExtractedItem> {
   const { option, sort, filter, merge } = getQueryParams(url);
 
@@ -65,11 +64,8 @@ export async function handleResponse(
     return data;
   }
   if (filter === "image") {
-    // check data type if it is ResponseData
-    if ("feed" in data) {
-      data = handleFılterImages(data);
-      return data;
-    }
+    data = handleFılterImages(data as ResponseData);
+    return data;
   }
   if (!merge && !option && !sort && !filter) {
     data = await parseRSSFeed(feedUrl);
