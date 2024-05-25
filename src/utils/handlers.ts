@@ -18,9 +18,14 @@ export function handleSort(data: ResponseData, sort: string): ResponseData {
   data.items = data.items.sort((a, b) => {
     if (sort === "asc" || sort === undefined) {
       return a.isoDate > b.isoDate ? 1 : -1;
-    } else {
-      // sort === "desc"
+    } else if (sort === "desc") {
       return a.isoDate < b.isoDate ? 1 : -1;
+    } else if (sort === "mixed") {
+      return Math.random() - 0.5;
+    } else {
+      throw new Error(
+        "Invalid sort option. Use 'asc', 'desc' or 'mixed' as sort option."
+      );
     }
   });
   return data;
@@ -78,7 +83,12 @@ export async function handleResponse(
   }
   if (sort) {
     data = handleSort(data, sort);
-  } else if (sort !== "asc" && sort !== "desc" && sort !== null) {
+  } else if (
+    sort !== "asc" &&
+    sort !== "desc" &&
+    sort !== "mixed" &&
+    sort !== null
+  ) {
     throw new Error("Invalid filter option. Use 'image' as filter option.");
   }
   if (filter === "image") {
