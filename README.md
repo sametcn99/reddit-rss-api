@@ -1,75 +1,90 @@
 # Overview
 
-This project is a Deno-based server application that serves as an API for fetching Reddit posts from RSS feeds. It provides several endpoints to fetch posts from one or more subreddits.
+This project is a Deno-based server application serving as an API for fetching Reddit posts from RSS feeds. It offers multiple endpoints to retrieve posts from one or more subreddits.
 
-## API Endpoints
+## Merging Subreddits
 
-Here is a list of URLs with their corresponding descriptions:
+The merge option enables you to gather data from multiple RSS feeds and consolidate them into a single response. By default, Reddit's RSS feed can return data from multiple subreddits in one request, but it has limitations on the amount of data. Setting the merge option to true prompts our API to send separate requests for each specified subreddit and then merge the results. This method yields more items compared to Reddit's default multiple subreddit RSS feed.
 
-1. **Multi Feed**
-   - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes](https://reddit-rss-api.deno.dev/r/memes+dankmemes)
+## Getting Started
 
-2. **Single Feed**
-   - URL: [https://reddit-rss-api.deno.dev/r/memes](https://reddit-rss-api.deno.dev/r/memes)
+- Initiate API usage by sending requests to [https://reddit-rss-api.deno.dev/r/{subreddits}].
+- You can specify multiple subreddit names by separating them with a `+`.
 
-3. **Home**
-   - URL: [https://reddit-rss-api.deno.dev](https://reddit-rss-api.deno.dev)
+### Combining Query Parameters
 
-4. **Random Post**
-   - URL: [https://reddit-rss-api.deno.dev/r/memes?option=random](https://reddit-rss-api.deno.dev/r/memes?option=random)
-   - Query Params: 
-     - `option`: `random`
+When using the API, you can combine different query parameters to tailor your request according to your needs.
 
-5. **Sort Descending**
-   - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc)
-   - Query Params:
-     - `sort`: `desc`
+## Query Parameters
 
-6. **Sort Ascending**
-   - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc)
-   - Query Params:
-     - `sort`: `asc`
+- **option**: Set this query parameter to `random` to fetch a random post from the specified subreddit(s).
+- **sort**: Set this query parameter to `mixed`, `asc`, or `desc` to sort the specified subreddit(s).
+- **filter**: Set this query parameter to `image` to retrieve only image posts from the feeds.
+- **merge**: Set this query parameter to `true` or `false` to merge items from multiple subreddits, useful for obtaining more posts from the feeds.
 
-7. **Filter Image**
-   - URL: [https://reddit-rss-api.deno.dev/r/turkey?filter=image](https://reddit-rss-api.deno.dev/r/turkey?filter=image)
-   - Query Params:
-     - `filter`: `image`
+## Enpoint Examples
 
-8. **Random Image Post**
-   - URL: [https://reddit-rss-api.deno.dev/r/turkey?filter=image&option=random](https://reddit-rss-api.deno.dev/r/turkey?filter=image&option=random)
-   - Query Params:
-     - `filter`: `image`
-     - `option`: `random`
+- **Sort Desc from Merged**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc&merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc&merge=true)
 
-9. **Merged Feeds**
-   - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true)
-   - Query Params:
-     - `merge`: `true`
+- **Sort Asc from Merged**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc&merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc&merge=true)
 
-10. **Random Post from Merged**
-    - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&option=random](https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&option=random)
-    - Query Params:
-      - `merge`: `true`
-      - `option`: `random`
+- **Sort Mixed from Merged**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=mixed&merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=mixed&merge=true)
 
-11. **Random Image Post from Merged**
-    - URL: [http://localhost:8000/r/memes+dankmemes?filter=image&option=random&merge=true](http://localhost:8000/r/memes+dankmemes?filter=image&option=random&merge=true)
-    - Query Params:
-      - `merge`: `true`
-      - `option`: `random`
-      - `filter`: `image`
+- **Sort Mixed from Merged and Filtered**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=mixed&filter=image&merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=mixed&filter=image&merge=true)
 
-12. **Filter Image from Merged**
-    - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&filter=image](https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&filter=image)
-    - Query Params:
-      - `merge`: `true`
-      - `filter`: `image`
-  
-### Query Parameters
+- **Sort Asc from Filtered and Merged**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc&filter=image&merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc&filter=image&merge=true)
 
-- **option**: This query parameter can be set to `random` to fetch a random post from the specified subreddit(s).
-- **sort**: This query parameter can be set to `mixed`, `asc` or `desc` to sort the specified subreddit(s).
-- **filter**: This query parameter can be set to `image` to get image posts from feeds.
-- **merge**: This query parameter can be set `true` or `false` to merge items from multiple subreddits, which is useful for getting more posts from feeds.
+- **Sort Desc from Merged and Filtered**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc&filter=image&merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc&filter=image&merge=true)
+
+- **Merged feeds**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true](https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true)
+
+- **Random Post from Merged**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&option=random](https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&option=random)
+
+- **Sort Desc**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc)
+
+- **Sort Asc**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc)
+
+- **Sort Mixed**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes?sort=mixed](https://reddit-rss-api.deno.dev/r/memes?sort=mixed)
+
+- **Sort Desc from Filtered**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc&filter=image](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=desc&filter=image)
+
+- **Sort Asc from Filtered**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc&filter=image](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=asc&filter=image)
+
+- **Sort Mixed from Filtered**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=mixed&filter=image](https://reddit-rss-api.deno.dev/r/memes+dankmemes?sort=mixed&filter=image)
+
+- **Random Image Post**
+  - URL: [https://reddit-rss-api.deno.dev/r/turkey?filter=image&option=random](https://reddit-rss-api.deno.dev/r/turkey?filter=image&option=random)
+
+- **Filter Images from Multi Feed**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes?filter=image](https://reddit-rss-api.deno.dev/r/memes+dankmemes?filter=image)
+
+- **Filter Images from Single Feed**
+  - URL: [https://reddit-rss-api.deno.dev/r/turkey?filter=image](https://reddit-rss-api.deno.dev/r/turkey?filter=image)
+
+- **Multi Feed**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes+dankmemes](https://reddit-rss-api.deno.dev/r/memes+dankmemes)
+
+- **Single Feed**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes](https://reddit-rss-api.deno.dev/r/memes)
+
+- **Home**
+  - URL: [https://reddit-rss-api.deno.dev](https://reddit-rss-api.deno.dev)
+
+- **Random Post**
+  - URL: [https://reddit-rss-api.deno.dev/r/memes?option=random](https://reddit-rss-api.deno.dev/r/memes?option=random)
 
 [Source Code](https://github.com/sametcn99/reddit-rss-api)
