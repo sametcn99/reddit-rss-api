@@ -111,6 +111,14 @@ function addMetaTagsToHtml(parsedHtml: Document) {
     { name: "viewport", content: "width=device-width, initial-scale=1" },
     // add favicon meta tag to the HTML from the file
   ];
+  const favicon = parsedHtml.createElement("link");
+  favicon.setAttribute("rel", "icon");
+  favicon.setAttribute("type", "image/png");
+  favicon.setAttribute(
+    "href",
+    "https://raw.githubusercontent.com/sametcn99/reddit-rss-api/main/public/favicon.ico"
+  );
+  parsedHtml.head.appendChild(favicon);
   for (const metaTag of metaTags) {
     const metaElement = parsedHtml.createElement("meta");
 
