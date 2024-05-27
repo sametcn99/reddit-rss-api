@@ -8,7 +8,7 @@ The merge option enables you to gather data from multiple RSS feeds and consolid
 
 ## Getting Started
 
-- Initiate API usage by sending requests to [https://reddit-rss-api.deno.dev/r/{subreddits}].
+- Initiate API usage by sending requests to [https://reddit-rss-api.deno.dev/r/{subreddits}](https://reddit-rss-api.deno.dev/r/{subreddits}).
 - You can specify multiple subreddit names by separating them with a `+`.
 
 ### Combining Query Parameters

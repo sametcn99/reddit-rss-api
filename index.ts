@@ -27,8 +27,13 @@ Deno.serve(async (req) => {
   let data: ResponseData | ExtractedItem;
 
   if (pathnames.length === 0) {
-    const readmeText = await getReadme();
-    return new Response(readmeText, {
+    const dom = await getReadme();
+    if (!dom || !dom.documentElement) {
+      return sendBadRequestResponse();
+    }
+    const htmlContent = dom.documentElement.outerHTML;
+
+    return new Response(htmlContent, {
       headers: {
         "Content-Type": "text/html",
         ...corsHeaders,
