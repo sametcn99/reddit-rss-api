@@ -1,6 +1,4 @@
-import { corsHeaders } from "../lib/lib.ts";
 import { Marked } from "npm:@ts-stack/markdown";
-import { parseRSSFeed } from "./fetch.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.45/deno-dom-wasm.ts";
 
 /**
@@ -109,8 +107,8 @@ function addMetaTagsToHtml(parsedHtml: Document) {
     { name: "language", content: "English" },
     { name: "author", content: "sametcn99" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
-    // add favicon meta tag to the HTML from the file
   ];
+
   const favicon = parsedHtml.createElement("link");
   favicon.setAttribute("rel", "icon");
   favicon.setAttribute("type", "image/png");
