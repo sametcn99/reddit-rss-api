@@ -101,7 +101,35 @@ export async function getReadme() {
       border-radius: 8px;
     }
   `;
+
   parsedHtml.head.appendChild(styleElement);
+
+  const metaTags = [
+    { name: "title", content: "Reddit RSS API" },
+    {
+      name: "description",
+      content:
+        "An API for fetching Reddit posts from RSS feeds. It offers multiple endpoints to retrieve posts from one or more subreddits.",
+    },
+    { name: "keywords", content: "reddit rss, reddit api" },
+    { name: "robots", content: "index, follow" },
+    { httpEquiv: "Content-Type", content: "text/html; charset=utf-8" },
+    { name: "language", content: "English" },
+    { name: "author", content: "sametcn99" },
+  ];
+
+  for (const metaTag of metaTags) {
+    const metaElement = parsedHtml.createElement("meta");
+
+    if (metaTag.name) {
+      metaElement.setAttribute("name", metaTag.name);
+    }
+    if (metaTag.httpEquiv) {
+      metaElement.setAttribute("http-equiv", metaTag.httpEquiv);
+    }
+    metaElement.setAttribute("content", metaTag.content);
+    parsedHtml.head.appendChild(metaElement);
+  }
   return parsedHtml;
 }
 

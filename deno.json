@@ -6,6 +6,12 @@
 		"test": "deno test -A src/tests/tests.ts"
 	},
 	"compilerOptions": {
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext",
+			"deno.ns"
+		],
 		"strict": true,
 		"checkJs": true,
 		"types": [
