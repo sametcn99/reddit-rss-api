@@ -1,19 +1,13 @@
-import {
-  constrsuctMergedFeedUrls,
-  isSubredditPath,
-} from "./src/utils/validators.ts";
+import { isSubredditPath } from "./src/utils/validators.ts";
 import { constructRedditFeedUrl } from "./src/utils/validators.ts";
 import { corsHeaders } from "./src/lib/lib.ts";
-import { parseRSSFeed } from "./src/utils/fetch.ts";
 import {
   logRequestBody,
-  getReadme,
   sendBadRequestResponse,
   sendOKResponse,
-  mergedSubreddits,
 } from "./src/utils/utils.ts";
-import { getQueryParams } from "./src/utils/handlers.ts";
 import { handleResponse } from "./src/utils/handlers.ts";
+import { getReadme } from "./src/utils/html.ts";
 
 Deno.serve(async (req) => {
   logRequestBody(req);
