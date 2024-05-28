@@ -2,7 +2,7 @@ import { parseRSSFeed } from "./fetch.ts";
 import { isNumber, mergedSubreddits } from "./utils.ts";
 import { constrsuctMergedFeedUrls } from "./validators.ts";
 
-export function handleFılterImages(data: ResponseData): ResponseData {
+export function handleFilterImages(data: ResponseData): ResponseData {
   data.items = data.items.filter((item) => item.images.length > 0);
   data.itemsLength = data.items.length;
   return data;
@@ -97,7 +97,7 @@ export async function handleResponse(
     throw new Error("Invalid filter option. Avaible filter option is 'image'");
   }
   if (filter === "image") {
-    data = handleFılterImages(data as ResponseData);
+    data = handleFilterImages(data as ResponseData);
   } else if (filter !== "image" && filter !== null) {
     throw new Error("Invalid filter option. Use 'image' as filter option.");
   }
