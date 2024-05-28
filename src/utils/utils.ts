@@ -16,14 +16,14 @@ export async function logRequestBody(req: Request) {
  * Sends a bad request response.
  * @returns {Response} The response object with a 400 status code and appropriate headers.
  */
-export function sendBadRequestResponse(): Response {
-  return new Response(`Bad request`, {
+export function sendBadRequestResponse(error?:string): Response {
+  return new Response(error , {
     status: 400,
     headers: {
       "Content-Type": "text/plain",
       ...corsHeaders,
     },
-    statusText: "Bad Request",
+    statusText: error,
   });
 }
 
@@ -73,4 +73,11 @@ export async function mergedSubreddits(
   } catch (error) {
     throw new Error(`Failed to fetch the RSS feed.`);
   }
+}
+
+export function isNumber(value?: string | number): boolean
+{
+   return ((value != null) &&
+           (value !== '') &&
+           !isNaN(Number(value.toString())));
 }

@@ -21,6 +21,7 @@ When using the API, you can combine different query parameters to tailor your re
 - **sort**: Set this query parameter to `mixed`, `asc`, or `desc` to sort the specified subreddit(s).
 - **filter**: Set this query parameter to `image` to retrieve only image posts from the feeds.
 - **merge**: Set this query parameter to `true` or `false` to merge items from multiple subreddits, useful for obtaining more posts from the feeds.
+- **count**: Set this query parameter for limit items. (count={number})
 
 [Check out example endpoints on Postman Docs.](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
 

@@ -43,8 +43,8 @@ Deno.serve(async (req) => {
       data = await handleResponse(url, feedUrl, pathnames);
       return sendOKResponse(data);
     } catch (error) {
-      return sendBadRequestResponse();
+      return sendBadRequestResponse(error);
     }
   }
-  return sendBadRequestResponse();
+  return sendBadRequestResponse("Bad Request. Invalid path.");
 });
