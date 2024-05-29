@@ -24,9 +24,9 @@ type ExtractedItem = {
   isoDate: Date;
   feedURL: string;
   id: string;
-  links: string[];
-  images: string[];
-  videos: string[];
+  links?: string[];
+  images?: string[];
+  videos?: string[];
 };
 
 type ResponseData = {

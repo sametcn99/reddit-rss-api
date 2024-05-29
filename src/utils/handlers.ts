@@ -6,11 +6,17 @@ export function handleFilter(data: ResponseData, filter: string): ResponseData {
   const filterArr = filter.toLocaleLowerCase().split(" ");
   filterArr.forEach((filter) => {
     if (filter === "image") {
-      data.items = data.items.filter((item) => item.images.length > 0);
-    } else if(filter === "video") {
-      data.items = data.items.filter((item) => item.videos.length > 0);
+      data.items = data.items.filter((item) =>
+        item.images ? item.images.length > 0 : null
+      );
+    } else if (filter === "video") {
+      data.items = data.items.filter((item) =>
+        item.videos ? item.videos.length > 0 : null
+      );
     } else {
-      throw new Error("Invalid filter option. Use 'image' as filter option.");
+      throw new Error(
+        "Invalid filter option. Avaible filter options: 'image', 'video'"
+      );
     }
   });
   data.itemsLength = data.items.length;
@@ -79,8 +85,8 @@ export async function handleResponse(
     lastBuildDate: new Date(),
     link: "",
     feedUrl: "",
-    items: [],
     itemsLength: 0,
+    items: [],
   };
   if (!option && !sort && !filter && !merge && !count) {
     data = await parseRSSFeed(feedUrl);
@@ -103,11 +109,13 @@ export async function handleResponse(
     sort !== "mixed" &&
     sort !== null
   ) {
-    throw new Error("Invalid sort option. Avaible filter options are 'asc', 'desc' and 'mixed");
+    throw new Error(
+      "Invalid sort option. Avaible filter options are 'asc', 'desc' and 'mixed"
+    );
   }
-  if (filter ) {
+  if (filter) {
     data = handleFilter(data as ResponseData, filter);
-  } 
+  }
   if (option === "random") {
     data = handleRandomPost(data);
   } else if (option !== "random" && option !== null) {
