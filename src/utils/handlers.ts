@@ -19,7 +19,6 @@ export function handleFilter(data: ResponseData, filter: string): ResponseData {
       );
     }
   });
-  data.itemsLength = data.items.length;
   return data;
 }
 
@@ -123,6 +122,8 @@ export async function handleResponse(
   }
   if ("items" in data && count !== null && count < data.items.length) {
     data.items = data.items.slice(0, count);
+  }
+  if ("items" in data ) {
     data.itemsLength = data.items.length;
   }
   return data as ResponseData | ExtractedItem;
