@@ -2,8 +2,17 @@ import { parseRSSFeed } from "./fetch.ts";
 import { isNumber, mergedSubreddits } from "./utils.ts";
 import { constrsuctMergedFeedUrls } from "./validators.ts";
 
-export function handleFilterImages(data: ResponseData): ResponseData {
-  data.items = data.items.filter((item) => item.images.length > 0);
+export function handleFilter(data: ResponseData, filter: string): ResponseData {
+  const filterArr = filter.toLocaleLowerCase().split(" ");
+  filterArr.forEach((filter) => {
+    if (filter === "image") {
+      data.items = data.items.filter((item) => item.images.length > 0);
+    } else if(filter === "video") {
+      data.items = data.items.filter((item) => item.videos.length > 0);
+    } else {
+      throw new Error("Invalid filter option. Use 'image' as filter option.");
+    }
+  });
   data.itemsLength = data.items.length;
   return data;
 }
@@ -47,13 +56,13 @@ export function getQueryParams(url: URL): {
   const filter = url.searchParams.get("filter");
   const merge = url.searchParams.get("merge");
   let count = url.searchParams.get("count") as string | number | null;
-  if(count !== null){
-    if(isNumber(count)){
-        count = Number(count);
+  if (count !== null) {
+    if (isNumber(count)) {
+      count = Number(count);
     } else {
-        throw new Error('Count must be a number.');
+      throw new Error("Count must be a number.");
     }
-}
+  }
   return { option, sort, filter, merge, count };
 }
 
@@ -73,7 +82,7 @@ export async function handleResponse(
     items: [],
     itemsLength: 0,
   };
-  if(!option && !sort && !filter && !merge && !count) {
+  if (!option && !sort && !filter && !merge && !count) {
     data = await parseRSSFeed(feedUrl);
     return data;
   }
@@ -94,13 +103,11 @@ export async function handleResponse(
     sort !== "mixed" &&
     sort !== null
   ) {
-    throw new Error("Invalid filter option. Avaible filter option is 'image'");
+    throw new Error("Invalid sort option. Avaible filter options are 'asc', 'desc' and 'mixed");
   }
-  if (filter === "image") {
-    data = handleFilterImages(data as ResponseData);
-  } else if (filter !== "image" && filter !== null) {
-    throw new Error("Invalid filter option. Use 'image' as filter option.");
-  }
+  if (filter ) {
+    data = handleFilter(data as ResponseData, filter);
+  } 
   if (option === "random") {
     data = handleRandomPost(data);
   } else if (option !== "random" && option !== null) {
@@ -109,6 +116,6 @@ export async function handleResponse(
   if ("items" in data && count !== null && count < data.items.length) {
     data.items = data.items.slice(0, count);
     data.itemsLength = data.items.length;
-  } 
+  }
   return data as ResponseData | ExtractedItem;
 }

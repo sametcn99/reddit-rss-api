@@ -26,6 +26,7 @@ type ExtractedItem = {
   id: string;
   links: string[];
   images: string[];
+  videos: string[];
 };
 
 type ResponseData = {

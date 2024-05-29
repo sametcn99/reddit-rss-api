@@ -12,7 +12,7 @@ export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
     if (!item.content) {
       throw new Error(`No content found in the RSS feed.`);
     }
-    const { links, images } = extractLinksAndImages(item.content);
+    const { links, images,videos } = extractLinksAndImages(item.content);
 
     return {
       title: item.title,
@@ -23,6 +23,7 @@ export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
       feedURL: feed.feedUrl,
       links,
       images,
+      videos
     };
   });
 }
@@ -36,7 +37,10 @@ export function extractLinksAndImages(content: string) {
   const dom = parse(content);
   const links = extractAttributes(dom.querySelectorAll("a"), "href");
   const images = extractAttributes(dom.querySelectorAll("img"), "src");
-  return { links, images };
+  const youtube = links.filter((link) => link.includes("youtube.com"));
+  const redditVideos = links.filter((link) => link.includes("v.redd.it"));
+  const videos = [...youtube, ...redditVideos];
+  return { links, images ,videos};
 }
 
 /**
