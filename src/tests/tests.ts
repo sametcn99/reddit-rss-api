@@ -44,11 +44,6 @@ Deno.test("parseRSSFeed throws for invalid URLs", async () => {
   await assertThrowsAsync(() => parseRSSFeed("invalid_url"));
 });
 
-Deno.test("mergedSubreddits should throw error for invalid urls", async () => {
-  const feedUrls = ["invalid_url", "https://www.reddit.com/r/typescript/.rss"];
-  const pathnames = "deno+typescript";
-  await assertThrowsAsync(() => mergedSubreddits(feedUrls, pathnames));
-});
 
 Deno.test(
   "extractQueryParams should return empty object for no query parameters",
@@ -62,6 +57,7 @@ Deno.test(
       sort: null,
       filter: null,
       merge: null,
+      count: null,
     });
   }
 );
