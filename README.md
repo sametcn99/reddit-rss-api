@@ -1,5 +1,6 @@
 # Overview
 
+[![Deno](https://github.com/sametcn99/reddit-rss-api/actions/workflows/deno.yml/badge.svg)](https://github.com/sametcn99/reddit-rss-api/actions/workflows/deno.yml)\
 This project is a Deno-based server application serving as an API for fetching Reddit posts from RSS feeds. It offers multiple endpoints to retrieve posts from one or more subreddits.
 
 ## Merging Subreddits
