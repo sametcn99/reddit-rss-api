@@ -25,6 +25,32 @@ When using the API, you can combine different query parameters to tailor your re
 - **merge**: Set this query parameter to `true` or `false` to merge items from multiple subreddits, useful for obtaining more posts from the feeds.
 - **count**: Set this query parameter for limit items. (count={number})
 
+## Response Types
+``` typescript
+type ExtractedItem = {
+  title: string;
+  link: string;
+  author: string;
+  isoDate: Date;
+  feedURL: string;
+  id: string;
+  message?: string;
+  links?: string[];
+  images?: string[];
+  videos?: string[];
+};
+
+type ResponseData = {
+  feed?: Feed;
+  title: string;
+  lastBuildDate: Date;
+  link: string;
+  feedUrl: string;
+  itemsLength?: number;
+  items: ExtractedItem[];
+};
+```
+
 [Check out example endpoints on Postman Docs.](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
 
 [Source Code](https://github.com/sametcn99/reddit-rss-api)
