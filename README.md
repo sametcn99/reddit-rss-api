@@ -20,7 +20,7 @@ When using the API, you can combine different query parameters to tailor your re
 ## Query Parameters
 
 - **option**: Set this query parameter to `random` to fetch a random post from the specified subreddit(s).
-- **sort**: Set this query parameter to `mixed`, `asc`, or `desc` to sort the specified subreddit(s).
+- **sort**: Set this query parameter to `mixed`, `asc`, or `desc` to sort the posts.
 - **filter**: Set this query parameter to `image`, `video` or `video+image` to retrieve only filtered posts from the feeds.
 - **merge**: Set this query parameter to `true` or `false` to merge items from multiple subreddits, useful for obtaining more posts from the feeds.
 - **count**: Set this query parameter for limit items. (count={number})
