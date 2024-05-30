@@ -12,7 +12,9 @@ export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
     if (!item.content) {
       throw new Error(`No content found in the RSS feed.`);
     }
-    const { links, images,videos } = extractLinksAndImages(item.content);
+    const { links, images, videos, message } = extractLinksAndImages(
+      item.content
+    );
 
     return {
       title: item.title,
@@ -21,7 +23,8 @@ export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
       isoDate: item.isoDate,
       id: item.id,
       feedURL: feed.feedUrl,
-      links: links.length > 0 ? links: undefined,
+      message: message ? message : undefined,
+      links: links.length > 0 ? links : undefined,
       images: images.length > 0 ? images : undefined,
       videos: videos.length > 0 ? videos : undefined,
     };
@@ -37,15 +40,21 @@ export function extractLinksAndImages(content: string) {
   const dom = parse(content);
   let links = extractAttributes(dom.querySelectorAll("a"), "href");
   const images = extractAttributes(dom.querySelectorAll("img"), "src");
+  const message = dom.querySelector("div")?.innerText;
   const youtube = links.filter((link) => link.includes("youtube.com"));
   const redditVideos = links.filter((link) => link.includes("v.redd.it"));
   const videos = [...youtube, ...redditVideos];
   // remove images and videos from links
-   links = links.filter((link) => {
-    return !images.includes(link) && !videos.includes(link)  && !link.includes("https://www.reddit.com/user/") && !link.includes("https://www.reddit.com/r/")
+  links = links.filter((link) => {
+    return (
+      !images.includes(link) &&
+      !videos.includes(link) &&
+      !link.includes("https://www.reddit.com/user/") &&
+      !link.includes("https://www.reddit.com/r/")
+    );
   });
   links = [...new Set(links)];
-  return { links, images ,videos};
+  return { links, images, videos, message };
 }
 
 /**

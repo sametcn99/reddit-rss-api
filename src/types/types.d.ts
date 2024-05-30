@@ -24,6 +24,7 @@ type ExtractedItem = {
   isoDate: Date;
   feedURL: string;
   id: string;
+  message?: string;
   links?: string[];
   images?: string[];
   videos?: string[];
