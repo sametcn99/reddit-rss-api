@@ -51,6 +51,6 @@ type ResponseData = {
 };
 ```
 
-[Check out example endpoints on Postman Docs.](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)[Check out example endpoints on Postman Docs.](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
 
-[Source Code](https://github.com/sametcn99/reddit-rss-api)
+![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)[Source Code](https://github.com/sametcn99/reddit-rss-api)
