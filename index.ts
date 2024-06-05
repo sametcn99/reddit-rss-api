@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     if (!dom || !dom.documentElement) {
       return sendBadRequestResponse();
     }
-    const htmlContent = dom.documentElement.outerHTML;
+    const htmlContent = `<DOCTYPE html>${dom.documentElement.outerHTML}`
 
     return new Response(htmlContent, {
       headers: {
