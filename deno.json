@@ -1,58 +1,33 @@
 {
-	"lock": false,
-	"tasks": {
-		"start": "deno run -A index.ts",
-		"dev": "deno run -A --watch index.ts",
-		"test": "deno test -A src/tests/tests.ts"
-	},
-	"compilerOptions": {
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"esnext",
-			"deno.ns"
-		],
-		"strict": true,
-		"checkJs": true,
-		"types": [
-			"./src/types/types.d.ts"
-		]
-	},
-	"fmt": {
-		"useTabs": true,
-		"lineWidth": 80,
-		"indentWidth": 4,
-		"semiColons": true,
-		"singleQuote": true,
-		"proseWrap": "preserve",
-		"include": [
-			"src/",
-			"*.*"
-		],
-		"exclude": [
-			"src/testdata/",
-			"src/fixtures/**/*.ts"
-		]
-	},
-	"lint": {
-		"include": [
-			"src/",
-			"*.*"
-		],
-		"exclude": [
-			"src/testdata/",
-			"src/fixtures/**/*.ts"
-		],
-		"rules": {
-			"tags": [
-				"recommended"
-			],
-			"include": [
-				"ban-untagged-todo"
-			],
-			"exclude": [
-				"no-unused-vars"
-			]
-		}
-	}
+  "lock": false,
+  "tasks": {
+    "start": "deno run -A index.ts",
+    "dev": "deno run -A --watch index.ts",
+    "test": "deno test -A src/tests/tests.ts"
+  },
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext", "deno.ns"],
+    "strict": true,
+    "checkJs": true,
+    "types": ["./src/types/types.d.ts"]
+  },
+  "fmt": {
+    "useTabs": true,
+    "lineWidth": 80,
+    "indentWidth": 4,
+    "semiColons": true,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "include": ["src/", "*.*"],
+    "exclude": ["src/testdata/", "src/fixtures/**/*.ts"]
+  },
+  "lint": {
+    "include": ["src/", "*.*"],
+    "exclude": ["src/testdata/", "src/fixtures/**/*.ts"],
+    "rules": {
+      "tags": ["recommended"],
+      "include": ["ban-untagged-todo"],
+      "exclude": ["no-unused-vars"]
+    }
+  }
 }

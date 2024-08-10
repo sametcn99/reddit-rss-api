@@ -27,6 +27,16 @@ When using the API, you can combine different query parameters to tailor your re
 
 ## Response Types
 ``` typescript
+type ResponseData = {
+  feed?: Feed;
+  title: string;
+  lastBuildDate: Date;
+  link: string;
+  feedUrl: string;
+  itemsLength?: number;
+  items: ExtractedItem[];
+};
+
 type ExtractedItem = {
   title: string;
   link: string;
@@ -40,17 +50,27 @@ type ExtractedItem = {
   videos?: string[];
 };
 
-type ResponseData = {
-  feed?: Feed;
+type Feed = {
   title: string;
   lastBuildDate: Date;
   link: string;
   feedUrl: string;
-  itemsLength?: number;
-  items: ExtractedItem[];
+  items: FeedItem[];
 };
+
+type FeedItem = {
+  id: string;
+  title: string;
+  link: string;
+  pubDate: Date;
+  author: string;
+  content: string;
+  contentSnippet: string;
+  isoDate: Date;
+};
+
 ```
 
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)[Check out example endpoints on Postman Docs.](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)[ Check out example endpoints on Postman Docs.](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
 
-![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)[Source Code](https://github.com/sametcn99/reddit-rss-api)
+![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)[ Source Code](https://github.com/sametcn99/reddit-rss-api)
