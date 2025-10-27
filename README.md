@@ -2,8 +2,6 @@
 
 A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.
 
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) [Interactive Postman Collection](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
-
 ![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white) [GitHub Repository](https://github.com/sametcn99/reddit-rss-api)
 
 ## Table of Contents
