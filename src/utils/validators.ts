@@ -4,12 +4,12 @@
  * @returns A boolean indicating whether the string is a valid URL or not.
  */
 export function isValidUrl(string: string) {
-  try {
-    new URL(string);
-    return true;
-  } catch (_) {
-    return false;
-  }
+	try {
+		new URL(string);
+		return true;
+	} catch (_) {
+		return false;
+	}
 }
 
 /**
@@ -19,7 +19,7 @@ export function isValidUrl(string: string) {
  * @returns A boolean indicating whether the pathnames represent a subreddit path.
  */
 export function isSubredditPath(pathnames: string[]): boolean {
-  return pathnames[0] === "r" && pathnames.length === 2;
+	return pathnames[0] === 'r' && pathnames.length === 2;
 }
 
 /**
@@ -27,8 +27,14 @@ export function isSubredditPath(pathnames: string[]): boolean {
  * @param pathnames - An array of strings representing the pathnames for the Reddit feed.
  * @returns The constructed Reddit feed URL.
  */
-export function constructRedditFeedUrl(pathnames: string[]): string {
-  return `https://www.reddit.com/${pathnames[0]}/${pathnames[1]}/.rss`;
+export function constructRedditFeedUrl(
+	pathnames: string[],
+	useOldReddit = false,
+): string {
+	const baseUrl = useOldReddit
+		? 'https://old.reddit.com'
+		: 'https://www.reddit.com';
+	return `${baseUrl}/${pathnames[0]}/${pathnames[1]}/.rss`;
 }
 
 /**
@@ -38,7 +44,7 @@ export function constructRedditFeedUrl(pathnames: string[]): string {
  * @returns A boolean indicating whether the pathnames represent multiple subreddits.
  */
 export function checkForMultipleSubreddits(pathnames: string[]): boolean {
-  return pathnames[1].includes("+");
+	return pathnames[1].includes('+');
 }
 
 /**
@@ -48,12 +54,15 @@ export function checkForMultipleSubreddits(pathnames: string[]): boolean {
  * @returns An array of strings containing the individual subreddits.
  */
 export function extractSubreddits(pathnames: string): string[] {
-  return pathnames.split("+");
+	return pathnames.split('+');
 }
 
-export function constrsuctMergedFeedUrls(subreddits: string): string[] {
-  const subredditsArray = extractSubreddits(subreddits);
-  return subredditsArray.map((subreddit) =>
-    constructRedditFeedUrl(["r", subreddit])
-  );
+export function constrsuctMergedFeedUrls(
+	subreddits: string,
+	useOldReddit = false,
+): string[] {
+	const subredditsArray = extractSubreddits(subreddits);
+	return subredditsArray.map((subreddit) =>
+		constructRedditFeedUrl(['r', subreddit], useOldReddit)
+	);
 }

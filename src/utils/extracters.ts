@@ -1,5 +1,13 @@
-import { HTMLElement, parse } from "npm:node-html-parser";
-import { parseRSSFeed } from "./fetch.ts";
+import { HTMLElement, parse } from 'npm:node-html-parser';
+import { parseRSSFeed } from './fetch.ts';
+
+const REDDIT_DOMAIN_REGEX = /^https?:\/\/(www\.)?reddit\.com/;
+
+export function mapToOldReddit(url: string): string {
+	return REDDIT_DOMAIN_REGEX.test(url)
+		? url.replace(REDDIT_DOMAIN_REGEX, 'https://old.reddit.com')
+		: url;
+}
 
 /**
  * Extracts relevant information from an array of feed items.
@@ -7,28 +15,36 @@ import { parseRSSFeed } from "./fetch.ts";
  * @returns An array of extracted items containing the title, link, author, isoDate, id, links, and images.
  * @throws An error if no content is found in the RSS feed.
  */
-export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
-  return items.map((item) => {
-    if (!item.content) {
-      throw new Error(`No content found in the RSS feed.`);
-    }
-    const { links, images, videos, message } = extractLinksAndImages(
-      item.content
-    );
+export function extractItems(
+	items: FeedItem[],
+	feed: Feed,
+	useOldReddit = false,
+): ExtractedItem[] {
+	return items.map((item) => {
+		if (!item.content) {
+			throw new Error(`No content found in the RSS feed.`);
+		}
+		const { links, images, videos, message } = extractLinksAndImages(
+			item.content,
+		);
+		const itemLink = useOldReddit ? mapToOldReddit(item.link) : item.link;
+		const feedUrl = useOldReddit
+			? mapToOldReddit(feed.feedUrl)
+			: feed.feedUrl;
 
-    return {
-      title: item.title,
-      link: item.link,
-      author: item.author,
-      isoDate: item.isoDate,
-      id: item.id,
-      feedURL: feed.feedUrl,
-      message: message ? message : undefined,
-      links: links.length > 0 ? links : undefined,
-      images: images.length > 0 ? images : undefined,
-      videos: videos.length > 0 ? videos : undefined,
-    };
-  });
+		return {
+			title: item.title,
+			link: itemLink,
+			author: item.author,
+			isoDate: item.isoDate,
+			id: item.id,
+			feedURL: feedUrl,
+			message: message ? message : undefined,
+			links: links.length > 0 ? links : undefined,
+			images: images.length > 0 ? images : undefined,
+			videos: videos.length > 0 ? videos : undefined,
+		};
+	});
 }
 
 /**
@@ -37,24 +53,26 @@ export function extractItems(items: FeedItem[], feed: Feed): ExtractedItem[] {
  * @returns An object containing the extracted links and images.
  */
 export function extractLinksAndImages(content: string) {
-  const dom = parse(content);
-  let links = extractAttributes(dom.querySelectorAll("a"), "href");
-  const images = extractAttributes(dom.querySelectorAll("img"), "src");
-  const message = dom.querySelector("div")?.innerText;
-  const youtube = links.filter((link) => link.includes("youtube.com"));
-  const redditVideos = links.filter((link) => link.includes("v.redd.it"));
-  const videos = [...youtube, ...redditVideos];
-  // remove images and videos from links
-  links = links.filter((link) => {
-    return (
-      !images.includes(link) &&
-      !videos.includes(link) &&
-      !link.includes("https://www.reddit.com/user/") &&
-      !link.includes("https://www.reddit.com/r/")
-    );
-  });
-  links = [...new Set(links)];
-  return { links, images, videos, message };
+	const dom = parse(content);
+	let links = extractAttributes(dom.querySelectorAll('a'), 'href');
+	const images = extractAttributes(dom.querySelectorAll('img'), 'src');
+	const message = dom.querySelector('div')?.innerText;
+	const youtube = links.filter((link) => link.includes('youtube.com'));
+	const redditVideos = links.filter((link) => link.includes('v.redd.it'));
+	const videos = [...youtube, ...redditVideos];
+	// remove images and videos from links
+	links = links.filter((link) => {
+		return (
+			!images.includes(link) &&
+			!videos.includes(link) &&
+			!link.includes('https://www.reddit.com/user/') &&
+			!link.includes('https://www.reddit.com/r/') &&
+			!link.includes('https://old.reddit.com/user/') &&
+			!link.includes('https://old.reddit.com/r/')
+		);
+	});
+	links = [...new Set(links)];
+	return { links, images, videos, message };
 }
 
 /**
@@ -65,25 +83,25 @@ export function extractLinksAndImages(content: string) {
  * @returns An array of strings containing the values of the specified attribute for each element.
  */
 export function extractAttributes(
-  elements: HTMLElement[],
-  attribute: string
+	elements: HTMLElement[],
+	attribute: string,
 ): string[] {
-  return elements.map((element) => element.getAttribute(attribute) || "");
+	return elements.map((element) => element.getAttribute(attribute) || '');
 }
 
 export async function getRandomPost(
-  feedUrl: string,
-  filter: string | null
+	feedUrl: string,
+	filter: string | null,
 ): Promise<ExtractedItem> {
-  const data = await parseRSSFeed(feedUrl);
-  const randomIndex = Math.floor(Math.random() * data.items.length);
-  let randomPost = data.items[randomIndex];
-  if (filter === "image") {
-    const filteredItems = data.items.filter(
-      (item) => item.images !== undefined && item.images.length > 0
-    );
-    const randomIndex = Math.floor(Math.random() * filteredItems.length);
-    randomPost = filteredItems[randomIndex];
-  }
-  return randomPost;
+	const data = await parseRSSFeed(feedUrl);
+	const randomIndex = Math.floor(Math.random() * data.items.length);
+	let randomPost = data.items[randomIndex];
+	if (filter === 'image') {
+		const filteredItems = data.items.filter(
+			(item) => item.images !== undefined && item.images.length > 0,
+		);
+		const randomIndex = Math.floor(Math.random() * filteredItems.length);
+		randomPost = filteredItems[randomIndex];
+	}
+	return randomPost;
 }
