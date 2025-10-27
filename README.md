@@ -209,5 +209,4 @@ Tests rely on live Reddit RSS endpoints; ensure you have network access when exe
 ## Resources
 
 - [Live API](https://reddit-rss-api.deno.dev)
-- [Interactive Postman Workspace](https://documenter.getpostman.com/view/30816351/2sA3Qs8WVo)
 - [GitHub Issues](https://github.com/sametcn99/reddit-rss-api/issues)
