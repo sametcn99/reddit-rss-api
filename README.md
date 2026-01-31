@@ -5,7 +5,7 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
 ## Resources
 
 - [GitHub Repository](https://github.com/sametcn99/reddit-rss-api)
-- [Live API](https://reddit-rss-api.deno.dev)
+- [Live API & Documentation](https://reddit-rss-api.deno.dev)
 - [GitHub Issues](https://github.com/sametcn99/reddit-rss-api/issues)
 
 ## Table of Contents
@@ -22,7 +22,7 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
   - [Helpful Tasks](#helpful-tasks)
   - [Architecture](#architecture)
   - [Testing](#testing)
-  
+
 ## Features
 
 - Merge multiple subreddits by delegating individual RSS requests and consolidating the payload for richer result sets.
@@ -113,25 +113,25 @@ curl "https://reddit-rss-api.deno.dev/r/pics?sort=desc&count=5"
 
 ```typescript
 type ResponseData = {
- title: string;
- lastBuildDate: Date;
- link: string;
- feedUrl: string;
- itemsLength?: number;
- items: ExtractedItem[];
+	title: string;
+	lastBuildDate: Date;
+	link: string;
+	feedUrl: string;
+	itemsLength?: number;
+	items: ExtractedItem[];
 };
 
 type ExtractedItem = {
- title: string;
- link: string;
- author: string;
- isoDate: Date;
- feedURL: string;
- id: string;
- message?: string;
- links?: string[];
- images?: string[];
- videos?: string[];
+	title: string;
+	link: string;
+	author: string;
+	isoDate: Date;
+	feedURL: string;
+	id: string;
+	message?: string;
+	links?: string[];
+	images?: string[];
+	videos?: string[];
 };
 ```
 
@@ -139,31 +139,31 @@ Sample response (`GET /r/deno?count=2`):
 
 ```json
 {
- "title": "posts from r/deno",
- "lastBuildDate": "2024-04-09T12:34:56.000Z",
- "link": "https://www.reddit.com/r/deno/",
- "feedUrl": "https://www.reddit.com/r/deno/.rss",
- "itemsLength": 2,
- "items": [
-  {
-   "title": "Deno 1.41 release highlights",
-   "link": "https://www.reddit.com/r/deno/comments/abc123/...",
-   "author": "user123",
-   "isoDate": "2024-04-09T09:12:34.000Z",
-   "feedURL": "https://www.reddit.com/r/deno/.rss",
-   "id": "t3_abc123",
-   "links": ["https://example.com/blog-post"],
-   "images": ["https://i.redd.it/xyz.png"]
-  },
-  {
-   "title": "Working with kv storage",
-   "link": "https://www.reddit.com/r/deno/comments/def456/...",
-   "author": "user456",
-   "isoDate": "2024-04-08T16:20:10.000Z",
-   "feedURL": "https://www.reddit.com/r/deno/.rss",
-   "id": "t3_def456"
-  }
- ]
+	"title": "posts from r/deno",
+	"lastBuildDate": "2024-04-09T12:34:56.000Z",
+	"link": "https://www.reddit.com/r/deno/",
+	"feedUrl": "https://www.reddit.com/r/deno/.rss",
+	"itemsLength": 2,
+	"items": [
+		{
+			"title": "Deno 1.41 release highlights",
+			"link": "https://www.reddit.com/r/deno/comments/abc123/...",
+			"author": "user123",
+			"isoDate": "2024-04-09T09:12:34.000Z",
+			"feedURL": "https://www.reddit.com/r/deno/.rss",
+			"id": "t3_abc123",
+			"links": ["https://example.com/blog-post"],
+			"images": ["https://i.redd.it/xyz.png"]
+		},
+		{
+			"title": "Working with kv storage",
+			"link": "https://www.reddit.com/r/deno/comments/def456/...",
+			"author": "user456",
+			"isoDate": "2024-04-08T16:20:10.000Z",
+			"feedURL": "https://www.reddit.com/r/deno/.rss",
+			"id": "t3_def456"
+		}
+	]
 }
 ```
 
