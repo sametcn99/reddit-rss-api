@@ -1,4 +1,4 @@
-import { assertEquals } from 'https://deno.land/std@0.224.0/assert/mod.ts';
+import { assertEquals, assertRejects } from '@std/assert';
 import { mergedSubreddits } from '../utils/utils.ts';
 import { parseRSSFeed } from '../utils/fetch.ts';
 import {
@@ -6,7 +6,6 @@ import {
 	isSubredditPath,
 } from '../utils/validators.ts';
 import { getQueryParams } from '../utils/handlers.ts';
-import { assertThrowsAsync } from 'https://deno.land/std@0.107.0/testing/asserts.ts';
 
 Deno.test('mergedSubreddits should return merged data', async () => {
 	const feedUrls = [
@@ -45,7 +44,7 @@ Deno.test('extractQueryParams should return correct query parameters', () => {
 });
 
 Deno.test('parseRSSFeed throws for invalid URLs', async () => {
-	await assertThrowsAsync(() => parseRSSFeed('invalid_url'));
+	await assertRejects(() => parseRSSFeed('invalid_url'));
 });
 
 Deno.test(

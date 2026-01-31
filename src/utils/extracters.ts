@@ -1,4 +1,4 @@
-import { HTMLElement, parse } from 'npm:node-html-parser';
+import { HTMLElement, parse } from 'node-html-parser';
 import { parseRSSFeed } from './fetch.ts';
 
 const REDDIT_DOMAIN_REGEX = /^https?:\/\/(www\.)?reddit\.com/;

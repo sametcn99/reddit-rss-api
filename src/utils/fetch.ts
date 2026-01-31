@@ -1,4 +1,4 @@
-import Parser from 'npm:rss-parser';
+import Parser from 'rss-parser';
 import { extractItems, mapToOldReddit } from './extracters.ts';
 
 /**
