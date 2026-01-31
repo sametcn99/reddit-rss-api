@@ -196,18 +196,21 @@ export const swaggerHtml = `
     <meta name="keywords" content="reddit, rss, api, json, deno, documentation" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="sametcn99" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://reddit-rss-api.deno.dev/" />
     <meta property="og:title" content="Reddit RSS API | Documentation" />
     <meta property="og:description" content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging." />
+    <meta property="og:image" content="https://reddit-rss-api.deno.dev/favicon.ico" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://reddit-rss-api.deno.dev/" />
     <meta property="twitter:title" content="Reddit RSS API | Documentation" />
     <meta property="twitter:description" content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging." />
+    <meta property="twitter:image" content="https://reddit-rss-api.deno.dev/favicon.ico" />
     <style>
       body {
         margin: 0;

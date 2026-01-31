@@ -27,6 +27,17 @@ Deno.serve(async (req) => {
 		});
 	}
 
+	if (url.pathname === '/favicon.ico') {
+		const icon = await Deno.readFile('./src/favicon.ico');
+		return new Response(icon, {
+			headers: {
+				'Content-Type': 'image/x-icon',
+				...corsHeaders,
+			},
+			status: 200,
+		});
+	}
+
 	let data: ResponseData | ExtractedItem;
 
 	if (pathnames.length === 0) {
