@@ -216,6 +216,7 @@ export const swaggerHtml = `
         margin: 0;
       }
     </style>
+    <script defer src="https://umami.sametcc.me/script.js" data-website-id="276eaa1b-b400-4185-a887-3371fc7ee745"></script>
   </head>
   <body>
     <script
