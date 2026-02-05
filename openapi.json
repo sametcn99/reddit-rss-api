@@ -1,0 +1,368 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Reddit RSS API",
+		"description": "A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.\n\n### Key Features\n- **Multi-Subreddit Merging**: Consolidate multiple subreddits into a single feed.\n- **Media Filtering**: Filter by images or videos via query parameters.\n- **Flexible Sorting**: Sort items by date (`asc`, `desc`) or shuffle them (`mixed`).\n- **Zero Dependencies**: Built with Deno and TypeScript for high performance.\n\n### Quick Usage\n```bash\ncurl \"https://reddit-rss-api.deno.dev/r/deno+typescript?merge=true&filter=image\"\n```\n\n### Resources\n- **GitHub Repository**: [sametcn99/reddit-rss-api](https://github.com/sametcn99/reddit-rss-api)\n- **Live API**: [https://reddit-rss-api.deno.dev](https://reddit-rss-api.deno.dev)",
+		"version": "1.0.0",
+		"contact": {
+			"name": "sametcn99",
+			"url": "https://github.com/sametcn99/reddit-rss-api"
+		}
+	},
+	"servers": [
+		{
+			"url": "https://reddit-rss-api.deno.dev",
+			"description": "Production server"
+		},
+		{
+			"url": "http://localhost:8000",
+			"description": "Local development server"
+		}
+	],
+	"paths": {
+		"/r/{subreddits}": {
+			"get": {
+				"summary": "Fetch RSS-derived JSON for subreddits",
+				"description": "Fetches and processes Reddit RSS feeds for one or more subreddits. Supports filtering by media type, sorting, merging multiple subreddit feeds, and fetching random posts.",
+				"operationId": "getSubreddits",
+				"parameters": [
+					{
+						"name": "subreddits",
+						"in": "path",
+						"required": true,
+						"description": "One or more subreddit names. separate multiple subreddits with '+' (e.g. 'deno+typescript').",
+						"schema": {
+							"type": "string",
+							"example": "deno+typescript"
+						}
+					},
+					{
+						"name": "option",
+						"in": "query",
+						"required": false,
+						"description": "Operational mode. Use `random` to get a single random item from the feed.",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"random"
+							]
+						}
+					},
+					{
+						"name": "sort",
+						"in": "query",
+						"required": false,
+						"description": "Sorting order for the feed items. `mixed` shuffles the items.",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"asc",
+								"desc",
+								"mixed"
+							],
+							"default": "asc"
+						}
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"required": false,
+						"description": "Filter items by media type. Combine options with space (encoded as '+').",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"image",
+								"video",
+								"image video"
+							],
+							"example": "image"
+						}
+					},
+					{
+						"name": "merge",
+						"in": "query",
+						"required": false,
+						"description": "If `true`, fetches each subreddit individually and merges the results. Useful for combining feeds.",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
+					},
+					{
+						"name": "count",
+						"in": "query",
+						"required": false,
+						"description": "Limit the number of items in the response.",
+						"schema": {
+							"type": "integer",
+							"minimum": 1
+						}
+					},
+					{
+						"name": "old_reddit",
+						"in": "query",
+						"required": false,
+						"description": "If `true`, rewrites all Reddit links to use `old.reddit.com`.",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"$ref": "#/components/schemas/ResponseData"
+										},
+										{
+											"$ref": "#/components/schemas/ExtractedItem"
+										}
+									]
+								},
+								"examples": {
+									"feed": {
+										"summary": "Full: /r/deno?count=1",
+										"value": {
+											"title": "Deno - A secure TypeScript runtime on V8",
+											"lastBuildDate": "2026-02-05T15:36:46+00:00",
+											"link": "https://www.reddit.com/r/deno/",
+											"feedUrl": "https://www.reddit.com/r/deno/.rss",
+											"itemsLength": 1,
+											"items": [
+												{
+													"title": "Idiomatic conversion of js imports",
+													"link": "https://www.reddit.com/r/Deno/comments/1qwmxz7/idiomatic_conversion_of_js_imports/",
+													"author": "/u/turbofish_pk",
+													"isoDate": "2026-02-05T14:37:37.000Z",
+													"id": "t3_1qwmxz7",
+													"feedURL": "https://www.reddit.com/r/deno/.rss",
+													"message": "What is the most idiomatic way to convert require(&#39;./util&#39;) in js repo to TypeScript for Deno? ..."
+												}
+											]
+										}
+									},
+									"random": {
+										"summary": "Random: /r/deno?option=random",
+										"value": {
+											"title": "Visual Tabs - Build your own browser extension",
+											"link": "https://www.reddit.com/r/Deno/comments/1qegzo0/visual_tabs_build_your_own_browser_extension/",
+											"author": "/u/jlantunez",
+											"isoDate": "2026-01-16T14:11:57.000Z",
+											"id": "t3_1qegzo0",
+											"feedURL": "https://www.reddit.com/r/deno/.rss",
+											"message": "We built this solution to help you create a custom new tab extension...",
+											"links": [
+												"https://github.com/oscarotero/visual-tabs"
+											]
+										}
+									},
+									"merged": {
+										"summary": "Merged: /r/deno+typescript?merge=true&count=1",
+										"value": {
+											"title": "Merged feed for deno + typescript",
+											"lastBuildDate": "2026-02-05T15:38:20.181Z",
+											"link": "https://reddit-rss-api.deno.dev/r/deno+typescript",
+											"feedUrl": "https://reddit-rss-api.deno.dev/",
+											"itemsLength": 1,
+											"items": [
+												{
+													"title": "Idiomatic conversion of js imports",
+													"link": "https://www.reddit.com/r/Deno/comments/1qwmxz7/idiomatic_conversion_of_js_imports/",
+													"author": "/u/turbofish_pk",
+													"isoDate": "2026-02-05T14:37:37.000Z",
+													"id": "t3_1qwmxz7",
+													"feedURL": "https://www.reddit.com/r/deno/.rss",
+													"message": "What is the most idiomatic way to convert require(&#39;./util&#39;) in js repo to TypeScript for Deno? ..."
+												}
+											]
+										}
+									},
+									"filtered": {
+										"summary": "Filtered: /r/pics?filter=image&count=1",
+										"value": {
+											"title": "Reddit Pics",
+											"lastBuildDate": "2026-02-05T15:38:22+00:00",
+											"link": "https://www.reddit.com/r/pics/",
+											"feedUrl": "https://www.reddit.com/r/pics/.rss",
+											"itemsLength": 1,
+											"items": [
+												{
+													"title": "Shitler [OC]",
+													"link": "https://www.reddit.com/r/pics/comments/1qwbh7o/shitler_oc/",
+													"author": "/u/LordChodeymort",
+													"isoDate": "2026-02-05T04:26:56.000Z",
+													"id": "t3_1qwbh7o",
+													"feedURL": "https://www.reddit.com/r/pics/.rss",
+													"links": [
+														"https://i.redd.it/edwdlv3kslhg1.jpeg"
+													],
+													"images": [
+														"https://preview.redd.it/edwdlv3kslhg1.jpeg?width=640&crop=smart&auto=webp&s=f4294e21eaad3f059833facf7cb2ef5dc9dd69b0"
+													]
+												}
+											]
+										}
+									},
+									"old_reddit": {
+										"summary": "Old Reddit: /r/deno?old_reddit=true&count=1",
+										"value": {
+											"title": "Deno - A secure TypeScript runtime on V8",
+											"lastBuildDate": "2026-02-05T15:38:23+00:00",
+											"link": "https://old.reddit.com/r/deno/",
+											"feedUrl": "https://old.reddit.com/r/deno/.rss",
+											"itemsLength": 1,
+											"items": [
+												{
+													"title": "Idiomatic conversion of js imports",
+													"link": "https://old.reddit.com/r/Deno/comments/1qwmxz7/idiomatic_conversion_of_js_imports/",
+													"author": "/u/turbofish_pk",
+													"isoDate": "2026-02-05T14:37:37.000Z",
+													"id": "t3_1qwmxz7",
+													"feedURL": "https://old.reddit.com/r/deno/.rss",
+													"message": "What is the most idiomatic way to convert require(&#39;./util&#39;)..."
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request - Invalid parameters or subreddits",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "string",
+									"example": "Invalid sort option. Use 'asc', 'desc' or 'mixed' as sort option."
+								}
+							}
+						}
+					},
+					"405": {
+						"description": "Method Not Allowed",
+						"content": {
+							"text/plain": {
+								"schema": {
+									"type": "string",
+									"example": "Method Not Allowed"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"ResponseData": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "Title of the feed"
+					},
+					"lastBuildDate": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Last update time of the feed"
+					},
+					"link": {
+						"type": "string",
+						"description": "Link to the subreddit(s)"
+					},
+					"feedUrl": {
+						"type": "string",
+						"description": "The source RSS feed URL"
+					},
+					"itemsLength": {
+						"type": "integer",
+						"description": "Number of items in the response"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ExtractedItem"
+						}
+					}
+				},
+				"required": [
+					"title",
+					"lastBuildDate",
+					"link",
+					"feedUrl",
+					"items"
+				]
+			},
+			"ExtractedItem": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "Title of the post"
+					},
+					"link": {
+						"type": "string",
+						"description": "Link to the Reddit post"
+					},
+					"author": {
+						"type": "string",
+						"description": "Author of the post"
+					},
+					"isoDate": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Publication date"
+					},
+					"feedURL": {
+						"type": "string",
+						"description": "Source feed URL"
+					},
+					"id": {
+						"type": "string",
+						"description": "Unique identifier for the post"
+					},
+					"message": {
+						"type": "string",
+						"description": "Content or description"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "External links extracted from the post"
+					},
+					"images": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Image URLs extracted from the post"
+					},
+					"videos": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Video URLs extracted from the post"
+					}
+				},
+				"required": [
+					"title",
+					"link",
+					"author",
+					"isoDate",
+					"feedURL",
+					"id"
+				]
+			}
+		}
+	}
+}

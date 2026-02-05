@@ -6,7 +6,9 @@ import {
 	sendOKResponse,
 } from './src/utils/utils.ts';
 import { handleResponse } from './src/utils/handlers.ts';
-import { openApiSpec, swaggerHtml } from './src/utils/openapi.ts';
+import openApiSpec from './openapi.json' with { type: 'json' };
+
+const swaggerHtml = await Deno.readTextFile('./index.html');
 
 Deno.serve(async (req) => {
 	logRequestBody(req);
