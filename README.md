@@ -15,12 +15,10 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
 - [Path Parameters](#path-parameters)
 - [Query Parameters](#query-parameters)
 - [Usage Examples](#usage-examples)
-- [Response Shape](#response-shape)
 - [Error Handling](#error-handling)
 - [Development](#development)
   - [Quick Start](#quick-start)
   - [Helpful Tasks](#helpful-tasks)
-  - [Architecture](#architecture)
   - [Testing](#testing)
 
 ## Features
@@ -35,7 +33,7 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
 ## API Overview
 
 - **Base URL**: `https://reddit-rss-api.deno.dev`
-- **Root (`GET /`)**: renders the Markdown README as HTML for quick documentation access.
+- **Root (`GET /`)**: provides basic API information and usage instructions.
 - **Feed (`GET /r/{subreddits}`)**: fetches RSS-derived JSON for one or more subreddits.
 
 ### Path Parameters
@@ -109,64 +107,6 @@ curl "https://reddit-rss-api.deno.dev/r/memes+videos?filter=video&option=random&
 curl "https://reddit-rss-api.deno.dev/r/pics?sort=desc&count=5"
 ```
 
-## Response Shape
-
-```typescript
-type ResponseData = {
-	title: string;
-	lastBuildDate: Date;
-	link: string;
-	feedUrl: string;
-	itemsLength?: number;
-	items: ExtractedItem[];
-};
-
-type ExtractedItem = {
-	title: string;
-	link: string;
-	author: string;
-	isoDate: Date;
-	feedURL: string;
-	id: string;
-	message?: string;
-	links?: string[];
-	images?: string[];
-	videos?: string[];
-};
-```
-
-Sample response (`GET /r/deno?count=2`):
-
-```json
-{
-	"title": "posts from r/deno",
-	"lastBuildDate": "2024-04-09T12:34:56.000Z",
-	"link": "https://www.reddit.com/r/deno/",
-	"feedUrl": "https://www.reddit.com/r/deno/.rss",
-	"itemsLength": 2,
-	"items": [
-		{
-			"title": "Deno 1.41 release highlights",
-			"link": "https://www.reddit.com/r/deno/comments/abc123/...",
-			"author": "user123",
-			"isoDate": "2024-04-09T09:12:34.000Z",
-			"feedURL": "https://www.reddit.com/r/deno/.rss",
-			"id": "t3_abc123",
-			"links": ["https://example.com/blog-post"],
-			"images": ["https://i.redd.it/xyz.png"]
-		},
-		{
-			"title": "Working with kv storage",
-			"link": "https://www.reddit.com/r/deno/comments/def456/...",
-			"author": "user456",
-			"isoDate": "2024-04-08T16:20:10.000Z",
-			"feedURL": "https://www.reddit.com/r/deno/.rss",
-			"id": "t3_def456"
-		}
-	]
-}
-```
-
 ## Error Handling
 
 - `400 Bad Request` for invalid paths, malformed query parameters, or RSS parsing failures.
@@ -189,34 +129,24 @@ To contribute to the project, follow these steps:
 3. Run the server:
 
    ```bash
-   deno run start
+   deno task start
    ```
 
    The service listens on `http://localhost:8000` by default.
 
 ### Helpful Tasks
 
-- `deno run start` – run the API once with full permissions.
-- `deno run dev` – watch mode for local development.
-- `deno run test` – execute the unit test suite under `src/tests/`.
-- `deno run fmt` – format codebase.
-
-### Architecture
-
-- `index.ts` – HTTP entry point. Routes requests, serves the README as HTML, and wires query processing.
-- `src/utils/fetch.ts` – Fetches and parses RSS feeds with `rss-parser`, normalizes links, and extracts items.
-- `src/utils/handlers.ts` – Orchestrates query parameter handling (merge, sort, filter, random, count, old Reddit toggles).
-- `src/utils/utils.ts` – Shared helpers (CORS responses, merged feed builder, numeric validation).
-- `src/utils/extracters.ts` – Parses HTML content, surfaces media URLs, and rewrites Reddit domains when requested.
-- `src/utils/html.ts` – Renders the README through `deno_dom` for the root HTML response.
-- `src/tests/tests.ts` – Unit tests verifying feed parsing, query validation, and Reddit URL construction.
+- `deno task start` – run the API once with full permissions.
+- `deno task dev` – watch mode for local development.
+- `deno task test` – execute the unit test suite under `src/tests/`.
+- `deno task fmt` – format codebase.
 
 ### Testing
 
 Run the full suite with:
 
 ```bash
-deno run test
+deno task test
 ```
 
 > Tests rely on live Reddit RSS endpoints; ensure you have network access when executing them.
