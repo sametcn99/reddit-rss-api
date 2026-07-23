@@ -1,30 +1,42 @@
 import Parser from 'rss-parser';
 import { extractItems, mapToOldReddit } from './extracters.ts';
 
+const parser = new Parser();
+const FETCH_TIMEOUT_MS = 10_000;
+const CACHE_TTL_MS = 60_000;
+const cache = new Map<string, { data: ResponseData; expires: number }>();
+
 /**
- * Parses an RSS feed and returns the extracted data.
- * @param feedUrl - The URL of the RSS feed to parse.
- * @returns The parsed RSS feed data.
- * @throws If there is an error fetching or parsing the RSS feed.
+ * Fetches and parses an RSS feed, with a short in-memory cache to avoid
+ * hammering Reddit on repeated requests for the same feed.
  */
 export async function parseRSSFeed(
 	feedUrl: string,
 	useOldReddit = false,
 ): Promise<ResponseData> {
-	try {
-		const parser = new Parser();
+	const cacheKey = `${feedUrl}:${useOldReddit}`;
+	const cached = cache.get(cacheKey);
+	if (cached && cached.expires > Date.now()) {
+		return cached.data;
+	}
 
-		const response = await fetch(feedUrl);
+	try {
+		const response = await fetch(feedUrl, {
+			signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+			headers: { 'User-Agent': 'reddit-rss-api/1.0' },
+		});
 
 		if (!response.ok) {
-			throw new Error(`Failed to fetch the RSS feed.`);
+			throw new Error(
+				`Failed to fetch the RSS feed (HTTP ${response.status}).`,
+			);
 		}
 
 		const data = await response.text();
-		const feed: Feed = (await parser.parseString(data)) as unknown as Feed;
+		const feed = (await parser.parseString(data)) as unknown as Feed;
 
-		if (!feed.items.length) {
-			throw new Error(`Failed to fetch the RSS feed.`);
+		if (!feed.items?.length) {
+			throw new Error('Failed to fetch the RSS feed.');
 		}
 
 		const extractedItems = extractItems(feed.items, feed, useOldReddit);
@@ -35,7 +47,7 @@ export async function parseRSSFeed(
 			? mapToOldReddit(feed.feedUrl)
 			: feed.feedUrl;
 
-		return {
+		const result: ResponseData = {
 			title: feed.title,
 			lastBuildDate: feed.lastBuildDate,
 			link: normalizedLink,
@@ -43,7 +55,20 @@ export async function parseRSSFeed(
 			itemsLength: feed.items.length,
 			items: extractedItems,
 		};
+
+		cache.set(cacheKey, {
+			data: result,
+			expires: Date.now() + CACHE_TTL_MS,
+		});
+		return result;
 	} catch (error) {
-		throw new Error(`Failed to fetch the RSS feed.`);
+		if (error instanceof DOMException && error.name === 'TimeoutError') {
+			throw new Error('RSS feed request timed out.');
+		}
+		throw new Error(
+			error instanceof Error
+				? error.message
+				: 'Failed to fetch the RSS feed.',
+		);
 	}
 }

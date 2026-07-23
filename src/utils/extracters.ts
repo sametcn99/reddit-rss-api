@@ -1,5 +1,4 @@
 import { HTMLElement, parse } from 'node-html-parser';
-import { parseRSSFeed } from './fetch.ts';
 
 const REDDIT_DOMAIN_REGEX = /^https?:\/\/(www\.)?reddit\.com/;
 
@@ -54,25 +53,33 @@ export function extractItems(
  */
 export function extractLinksAndImages(content: string) {
 	const dom = parse(content);
-	let links = extractAttributes(dom.querySelectorAll('a'), 'href');
+	const links = extractAttributes(dom.querySelectorAll('a'), 'href');
 	const images = extractAttributes(dom.querySelectorAll('img'), 'src');
 	const message = dom.querySelector('div')?.innerText;
-	const youtube = links.filter((link) => link.includes('youtube.com'));
-	const redditVideos = links.filter((link) => link.includes('v.redd.it'));
-	const videos = [...youtube, ...redditVideos];
-	// remove images and videos from links
-	links = links.filter((link) => {
-		return (
-			!images.includes(link) &&
-			!videos.includes(link) &&
-			!link.includes('https://www.reddit.com/user/') &&
-			!link.includes('https://www.reddit.com/r/') &&
-			!link.includes('https://old.reddit.com/user/') &&
-			!link.includes('https://old.reddit.com/r/')
-		);
-	});
-	links = [...new Set(links)];
-	return { links, images, videos, message };
+
+	const imageSet = new Set(images);
+	const videos: string[] = [];
+	const filteredLinks: string[] = [];
+	const seenLinks = new Set<string>();
+
+	for (const link of links) {
+		if (imageSet.has(link)) continue;
+		if (link.includes('youtube.com') || link.includes('v.redd.it')) {
+			videos.push(link);
+			continue;
+		}
+		if (
+			link.includes('reddit.com/user/') ||
+			link.includes('reddit.com/r/')
+		) {
+			continue;
+		}
+		if (!seenLinks.has(link)) {
+			seenLinks.add(link);
+			filteredLinks.push(link);
+		}
+	}
+	return { links: filteredLinks, images, videos, message };
 }
 
 /**
@@ -86,22 +93,7 @@ export function extractAttributes(
 	elements: HTMLElement[],
 	attribute: string,
 ): string[] {
-	return elements.map((element) => element.getAttribute(attribute) || '');
-}
-
-export async function getRandomPost(
-	feedUrl: string,
-	filter: string | null,
-): Promise<ExtractedItem> {
-	const data = await parseRSSFeed(feedUrl);
-	const randomIndex = Math.floor(Math.random() * data.items.length);
-	let randomPost = data.items[randomIndex];
-	if (filter === 'image') {
-		const filteredItems = data.items.filter(
-			(item) => item.images !== undefined && item.images.length > 0,
-		);
-		const randomIndex = Math.floor(Math.random() * filteredItems.length);
-		randomPost = filteredItems[randomIndex];
-	}
-	return randomPost;
+	return elements
+		.map((element) => element.getAttribute(attribute))
+		.filter((value): value is string => value !== null);
 }

@@ -2,19 +2,7 @@ import { corsHeaders } from '../lib/lib.ts';
 import { parseRSSFeed } from './fetch.ts';
 
 /**
- * Logs the request body if it exists.
- * @param req - The request object.
- */
-export async function logRequestBody(req: Request) {
-	if (req.body) {
-		const body = await req.text();
-		console.log(`Body: ${body}`);
-	}
-}
-
-/**
  * Sends a bad request response.
- * @returns {Response} The response object with a 400 status code and appropriate headers.
  */
 export function sendBadRequestResponse(error?: string): Response {
 	return new Response(error, {
@@ -23,15 +11,11 @@ export function sendBadRequestResponse(error?: string): Response {
 			'Content-Type': 'text/plain',
 			...corsHeaders,
 		},
-		statusText: error,
 	});
 }
 
 /**
  * Sends an OK response with the provided data.
- *
- * @param data - The data to be sent in the response.
- * @returns The response object.
  */
 export function sendOKResponse(
 	data: ExtractedItem | ResponseData[] | ResponseData | string,
@@ -41,8 +25,6 @@ export function sendOKResponse(
 			'Content-Type': 'application/json',
 			...corsHeaders,
 		},
-		status: 200,
-		statusText: 'OK',
 	});
 }
 
@@ -51,31 +33,23 @@ export async function mergedSubreddits(
 	pathnames: string,
 	useOldReddit = false,
 ): Promise<ResponseData> {
-	try {
-		const subreddits = pathnames.split('+');
-		let data: ResponseData = {
-			title: `Merged feed for ${subreddits.join(' + ')}`,
-			lastBuildDate: new Date(),
-			link: `https://reddit-rss-api.sametcn99.deno.net/r/${pathnames}`,
-			feedUrl: 'https://reddit-rss-api.sametcn99.deno.net/',
-			items: [],
-		};
+	const subreddits = pathnames.split('+');
+	const data: ResponseData = {
+		title: `Merged feed for ${subreddits.join(' + ')}`,
+		lastBuildDate: new Date(),
+		link: `https://reddit-rss-api.sametcn99.deno.net/r/${pathnames}`,
+		feedUrl: 'https://reddit-rss-api.sametcn99.deno.net/',
+		items: [],
+	};
 
-		const feedDataPromises = feedUrls.map((feedUrl) =>
-			parseRSSFeed(feedUrl, useOldReddit)
-		);
-		const feedDataArray = await Promise.all(feedDataPromises);
-		for (const feedData of feedDataArray) {
-			data = {
-				...data,
-				items: data.items.concat(feedData.items),
-			};
-		}
-		data.itemsLength = data.items.length;
-		return data;
-	} catch (error) {
-		throw new Error(`Failed to fetch the RSS feed.`);
+	const feedDataArray = await Promise.all(
+		feedUrls.map((feedUrl) => parseRSSFeed(feedUrl, useOldReddit)),
+	);
+	for (const feedData of feedDataArray) {
+		data.items.push(...feedData.items);
 	}
+	data.itemsLength = data.items.length;
+	return data;
 }
 
 export function isNumber(value?: string | number): boolean {

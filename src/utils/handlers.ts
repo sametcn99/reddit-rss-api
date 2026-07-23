@@ -6,45 +6,58 @@ import {
 } from './validators.ts';
 
 export function handleFilter(data: ResponseData, filter: string): ResponseData {
-	const filterArr = filter.toLocaleLowerCase().split(' ');
-	filterArr.forEach((filter) => {
-		if (filter === 'image') {
-			data.items = data.items.filter((item) =>
-				item.images ? item.images.length > 0 : null
-			);
-		} else if (filter === 'video') {
-			data.items = data.items.filter((item) =>
-				item.videos ? item.videos.length > 0 : null
-			);
-		} else {
+	const filters = new Set(filter.toLocaleLowerCase().split(' '));
+	const validFilters = new Set(['image', 'video']);
+
+	for (const f of filters) {
+		if (!validFilters.has(f)) {
 			throw new Error(
-				"Invalid filter option. Avaible filter options: 'image', 'video'",
+				"Invalid filter option. Available filter options: 'image', 'video'",
 			);
 		}
+	}
+
+	data.items = data.items.filter((item) => {
+		if (filters.has('image') && item.images && item.images.length > 0) {
+			return true;
+		}
+		if (filters.has('video') && item.videos && item.videos.length > 0) {
+			return true;
+		}
+		return false;
 	});
 	return data;
 }
 
 export function handleRandomPost(data: ResponseData): ExtractedItem {
+	if (data.items.length === 0) {
+		throw new Error('No items available to pick a random post from.');
+	}
 	const randomIndex = Math.floor(Math.random() * data.items.length);
-	const randomPost = data.items[randomIndex];
-	return randomPost;
+	return data.items[randomIndex];
 }
 
 export function handleSort(data: ResponseData, sort: string): ResponseData {
-	data.items = data.items.sort((a, b) => {
-		if (sort === 'asc' || sort === undefined) {
-			return a.isoDate > b.isoDate ? 1 : -1;
-		} else if (sort === 'desc') {
-			return a.isoDate < b.isoDate ? 1 : -1;
-		} else if (sort === 'mixed') {
-			return Math.random() - 0.5;
-		} else {
-			throw new Error(
-				"Invalid sort option. Use 'asc', 'desc' or 'mixed' as sort option.",
-			);
+	const sorted = [...data.items];
+	if (sort === 'asc') {
+		sorted.sort((a, b) =>
+			new Date(a.isoDate).getTime() - new Date(b.isoDate).getTime()
+		);
+	} else if (sort === 'desc') {
+		sorted.sort((a, b) =>
+			new Date(b.isoDate).getTime() - new Date(a.isoDate).getTime()
+		);
+	} else if (sort === 'mixed') {
+		for (let i = sorted.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[sorted[i], sorted[j]] = [sorted[j], sorted[i]];
 		}
-	});
+	} else {
+		throw new Error(
+			"Invalid sort option. Use 'asc', 'desc' or 'mixed' as sort option.",
+		);
+	}
+	data.items = sorted;
 	return data;
 }
 
@@ -95,53 +108,36 @@ export async function handleResponse(
 	const useOldReddit = oldReddit === 'true';
 	const feedUrl = constructRedditFeedUrl(pathnames, useOldReddit);
 
-	let data: ResponseData | ExtractedItem;
-	data = {
-		title: '',
-		lastBuildDate: new Date(),
-		link: '',
-		feedUrl: '',
-		itemsLength: 0,
-		items: [],
-	};
+	// Fast path: no query params, just fetch and return
 	if (!option && !sort && !filter && !merge && !count) {
-		data = await parseRSSFeed(feedUrl, useOldReddit);
-		return data;
+		return await parseRSSFeed(feedUrl, useOldReddit);
 	}
+
+	let data: ResponseData;
 
 	if (merge === 'true') {
 		const feedUrls = constrsuctMergedFeedUrls(pathnames[1], useOldReddit);
 		data = await mergedSubreddits(feedUrls, pathnames[1], useOldReddit);
-	} else if (merge !== 'true' && merge !== null && merge !== 'false') {
+	} else if (merge !== null && merge !== 'false') {
 		throw new Error("Invalid merge option. Use 'true' as merge option.");
-	} else if (merge === 'false' || merge === null) {
+	} else {
 		data = await parseRSSFeed(feedUrl, useOldReddit);
 	}
+
 	if (sort) {
 		data = handleSort(data, sort);
-	} else if (
-		sort !== 'asc' &&
-		sort !== 'desc' &&
-		sort !== 'mixed' &&
-		sort !== null
-	) {
-		throw new Error(
-			"Invalid sort option. Avaible filter options are 'asc', 'desc' and 'mixed",
-		);
 	}
 	if (filter) {
-		data = handleFilter(data as ResponseData, filter);
+		data = handleFilter(data, filter);
 	}
 	if (option === 'random') {
-		data = handleRandomPost(data);
-	} else if (option !== 'random' && option !== null) {
+		return handleRandomPost(data);
+	} else if (option !== null) {
 		throw new Error("Invalid option. Use 'random' as option.");
 	}
-	if ('items' in data && count !== null && count < data.items.length) {
+	if (count !== null && count < data.items.length) {
 		data.items = data.items.slice(0, count);
 	}
-	if ('items' in data) {
-		data.itemsLength = data.items.length;
-	}
-	return data as ResponseData | ExtractedItem;
+	data.itemsLength = data.items.length;
+	return data;
 }

@@ -1,45 +1,53 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Reddit RSS API | Documentation</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON." />
-    <meta name="keywords" content="reddit, rss, api, json, deno, documentation" />
-    <meta name="robots" content="index, follow" />
-    <meta name="author" content="sametcn99" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+	<head>
+		<title>Reddit RSS API | Documentation</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description"
+			content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON." />
+		<meta name="keywords"
+			content="reddit, rss, api, json, deno, documentation" />
+		<meta name="robots" content="index, follow" />
+		<meta name="author" content="sametcn99" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://reddit-rss-api.sametcn99.deno.net/" />
-    <meta property="og:title" content="Reddit RSS API | Documentation" />
-    <meta
-      property="og:description"
-      content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging."
-    />
-    <meta property="og:image" content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico" />
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url"
+			content="https://reddit-rss-api.sametcn99.deno.net/" />
+		<meta property="og:title" content="Reddit RSS API | Documentation" />
+		<meta
+			property="og:description"
+			content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging."
+		/>
+		<meta property="og:image"
+			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://reddit-rss-api.sametcn99.deno.net/" />
-    <meta property="twitter:title" content="Reddit RSS API | Documentation" />
-    <meta
-      property="twitter:description"
-      content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging."
-    />
-    <meta property="twitter:image" content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico" />
-    <style>
-      body {
-        margin: 0;
-      }
-    </style>
-    <script defer src="https://umami.sametcc.me/script.js" data-website-id="276eaa1b-b400-4185-a887-3371fc7ee745"></script>
-  </head>
-  <body>
-    <div
-      id="migration-notice"
-      style="
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url"
+			content="https://reddit-rss-api.sametcn99.deno.net/" />
+		<meta property="twitter:title"
+			content="Reddit RSS API | Documentation" />
+		<meta
+			property="twitter:description"
+			content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging."
+		/>
+		<meta property="twitter:image"
+			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico" />
+		<style>
+		body {
+			margin: 0;
+		}
+		</style>
+		<script defer src="https://umami.sametcc.me/script.js"
+			data-website-id="276eaa1b-b400-4185-a887-3371fc7ee745"></script>
+	</head>
+	<body>
+		<div
+			id="migration-notice"
+			style="
         background: #1a1a2e;
         border-bottom: 1px solid #333;
         padding: 8px 16px;
@@ -54,25 +62,25 @@
         align-items: center;
         gap: 10px;
       "
-    >
-      <span style="flex: 1">
+		>
+			<span style="flex: 1">
         <strong style="color: #e94560">We've moved!</strong>
         This project migrated to Deno's new deploy platform. The old domain (<code>reddit-rss-api.deno.dev</code>) will lose access on
         <strong>July 20, 2026</strong>. New home:
         <a href="https://reddit-rss-api.sametcn99.deno.net/" style="color: #e94560">reddit-rss-api.sametcn99.deno.net</a>
       </span>
-      <button
-        onclick="document.getElementById('migration-notice').remove()"
-        style="background: none; border: none; color: #666; cursor: pointer; font-size: 1.1rem; padding: 0 4px; line-height: 1"
-        title="Dismiss"
-      >
+			<button
+				onclick="document.getElementById('migration-notice').remove()"
+				style="background: none; border: none; color: #666; cursor: pointer; font-size: 1.1rem; padding: 0 4px; line-height: 1"
+				title="Dismiss"
+			>
         &times;
       </button>
-    </div>
-    <script
-      id="api-reference"
-      data-url="/openapi.json"
-      data-configuration='{
+		</div>
+		<script
+			id="api-reference"
+			data-url="/openapi.json"
+			data-configuration='{
 				"theme": "deepSpace",
 				"layout": "modern",
 				"showSidebar": true,
@@ -85,7 +93,8 @@
 					"url": "/openapi.json"
 				}
 			}'
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
-  </body>
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+	</body>
 </html>
