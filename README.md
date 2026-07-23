@@ -2,6 +2,7 @@
 
 A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.
 
+> [!CAUTION]
 > **We've moved!** This project was originally deployed for free on Deno's _classic_ deploy platform. Honestly, I never expected anyone to use it. But somehow it grew to **~30,000 requests/month** (!), so to keep things running I've migrated it to Deno's new deploy platform.
 >
 > The old domain (`reddit-rss-api.deno.dev`) will lose access on **July 20, 2026**. Please update your bookmarks and requests to the new home:
@@ -49,37 +50,31 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
 ## Query Parameters
 
 - **`option`** _(string)_
-
   - **Values:** `random`
   - **Default:** `null`
   - **Description:** Returns a single random item from the processed feed.
 
 - **`sort`** _(string)_
-
   - **Values:** `asc`, `desc`, `mixed`
   - **Default:** `asc`
   - **Description:** Orders items by publish date or shuffles them (`mixed`). Applied before `count`.
 
 - **`filter`** _(string)_
-
   - **Values:** `image`, `video`, `image+video`
   - **Default:** `null`
   - **Description:** Keeps only media-rich posts. Combine options with `+` (decoded as space).
 
 - **`merge`** _(boolean)_
-
   - **Values:** `true`, `false`
   - **Default:** `false`
   - **Description:** When `true`, the API fetches each subreddit individually and merges the results.
 
 - **`count`** _(number)_
-
   - **Values:** `>= 1`
   - **Default:** `null`
   - **Description:** Truncates the response to the first _n_ items after all other operations.
 
 - **`old_reddit`** _(boolean)_
-
   - **Values:** `true`, `false`
   - **Default:** `false`
   - **Description:** Rewrites feed and item links to use `old.reddit.com`.
