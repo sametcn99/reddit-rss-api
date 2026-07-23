@@ -18,7 +18,8 @@
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://reddit-rss-api.deno.dev/" />
+		<meta property="og:url"
+			content="https://reddit-rss-api.sametcn99.deno.net/" />
 		<meta property="og:title" content="Reddit RSS API | Documentation" />
 		<meta
 			property="og:description"
@@ -26,14 +27,14 @@
 		/>
 		<meta
 			property="og:image"
-			content="https://reddit-rss-api.deno.dev/favicon.ico"
+			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico"
 		/>
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta
 			property="twitter:url"
-			content="https://reddit-rss-api.deno.dev/"
+			content="https://reddit-rss-api.sametcn99.deno.net/"
 		/>
 		<meta
 			property="twitter:title"
@@ -45,12 +46,12 @@
 		/>
 		<meta
 			property="twitter:image"
-			content="https://reddit-rss-api.deno.dev/favicon.ico"
+			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico"
 		/>
 		<style>
-			body {
-				margin: 0;
-			}
+		body {
+			margin: 0;
+		}
 		</style>
 		<script
 			defer
@@ -59,6 +60,31 @@
 		></script>
 	</head>
 	<body>
+		<div style="
+			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+			border-bottom: 3px solid #e94560;
+			padding: 20px 24px;
+			text-align: center;
+			font-family: system-ui, -apple-system, sans-serif;
+			color: #eee;
+			line-height: 1.7;
+		">
+			<p style="margin: 0; font-size: 1rem;">
+				<strong>We've moved!</strong> This project was originally deployed for free on Deno's <em>classic</em> deploy platform. Honestly, I never expected anyone to use it.
+				But somehow it grew to <strong>~30,000 requests/month</strong> (!), so to keep things running I've migrated it to Deno's new deploy platform.
+			</p>
+			<p style="margin: 10px 0 0 0; font-size: 0.95rem; opacity: 0.85;">
+				The old domain (<code>reddit-rss-api.deno.dev</code>) will lose access on <strong>July 20, 2026</strong>.
+				Please update your bookmarks and requests to the new home:
+			</p>
+			<a href="https://reddit-rss-api.sametcn99.deno.net/"
+				style="display: inline-block; margin-top: 12px; padding: 10px 24px; background: #e94560; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s;"
+				onmouseover="this.style.background='#c23152'"
+				onmouseout="this.style.background='#e94560'"
+			>
+				reddit-rss-api.sametcn99.deno.net
+			</a>
+		</div>
 		<script
 			id="api-reference"
 			data-url="/openapi.json"

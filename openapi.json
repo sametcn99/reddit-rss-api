@@ -2,7 +2,7 @@
 	"openapi": "3.0.0",
 	"info": {
 		"title": "Reddit RSS API",
-		"description": "A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.\n\n### Key Features\n- **Multi-Subreddit Merging**: Consolidate multiple subreddits into a single feed.\n- **Media Filtering**: Filter by images or videos via query parameters.\n- **Flexible Sorting**: Sort items by date (`asc`, `desc`) or shuffle them (`mixed`).\n- **Zero Dependencies**: Built with Deno and TypeScript for high performance.\n\n### Quick Usage\n```bash\ncurl \"https://reddit-rss-api.deno.dev/r/deno+typescript?merge=true&filter=image\"\n```\n\n### Resources\n- **GitHub Repository**: [sametcn99/reddit-rss-api](https://github.com/sametcn99/reddit-rss-api)\n- **Live API**: [https://reddit-rss-api.deno.dev](https://reddit-rss-api.deno.dev)",
+		"description": "A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.\n\n### Key Features\n- **Multi-Subreddit Merging**: Consolidate multiple subreddits into a single feed.\n- **Media Filtering**: Filter by images or videos via query parameters.\n- **Flexible Sorting**: Sort items by date (`asc`, `desc`) or shuffle them (`mixed`).\n- **Zero Dependencies**: Built with Deno and TypeScript for high performance.\n\n### Quick Usage\n```bash\ncurl \"https://reddit-rss-api.sametcn99.deno.net/r/deno+typescript?merge=true&filter=image\"\n```\n\n### Resources\n- **GitHub Repository**: [sametcn99/reddit-rss-api](https://github.com/sametcn99/reddit-rss-api)\n- **Live API**: [https://reddit-rss-api.sametcn99.deno.net](https://reddit-rss-api.sametcn99.deno.net)",
 		"version": "1.0.0",
 		"contact": {
 			"name": "sametcn99",
@@ -11,7 +11,7 @@
 	},
 	"servers": [
 		{
-			"url": "https://reddit-rss-api.deno.dev",
+			"url": "https://reddit-rss-api.sametcn99.deno.net",
 			"description": "Production server"
 		},
 		{
@@ -166,8 +166,8 @@
 										"value": {
 											"title": "Merged feed for deno + typescript",
 											"lastBuildDate": "2026-02-05T15:38:20.181Z",
-											"link": "https://reddit-rss-api.deno.dev/r/deno+typescript",
-											"feedUrl": "https://reddit-rss-api.deno.dev/",
+											"link": "https://reddit-rss-api.sametcn99.deno.net/r/deno+typescript",
+											"feedUrl": "https://reddit-rss-api.sametcn99.deno.net/",
 											"itemsLength": 1,
 											"items": [
 												{

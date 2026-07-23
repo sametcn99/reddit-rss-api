@@ -2,10 +2,16 @@
 
 A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.
 
+> **We've moved!** This project was originally deployed for free on Deno's _classic_ deploy platform. Honestly, I never expected anyone to use it. But somehow it grew to **~30,000 requests/month** (!), so to keep things running I've migrated it to Deno's new deploy platform.
+>
+> The old domain (`reddit-rss-api.deno.dev`) will lose access on **July 20, 2026**. Please update your bookmarks and requests to the new home:
+>
+> **[reddit-rss-api.sametcn99.deno.net](https://reddit-rss-api.sametcn99.deno.net/)**
+
 ## Resources
 
 - [GitHub Repository](https://github.com/sametcn99/reddit-rss-api)
-- [Live API & Documentation](https://reddit-rss-api.deno.dev)
+- [Live API & Documentation](https://reddit-rss-api.sametcn99.deno.net/)
 - [GitHub Issues](https://github.com/sametcn99/reddit-rss-api/issues)
 
 ## Table of Contents
@@ -32,7 +38,7 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
 
 ## API Overview
 
-- **Base URL**: `https://reddit-rss-api.deno.dev`
+- **Base URL**: `https://reddit-rss-api.sametcn99.deno.net/`
 - **Root (`GET /`)**: provides basic API information and usage instructions.
 - **Feed (`GET /r/{subreddits}`)**: fetches RSS-derived JSON for one or more subreddits.
 
@@ -86,25 +92,25 @@ A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structure
 ### Fetch the Latest Posts from a Single Subreddit
 
 ```bash
-curl "https://reddit-rss-api.deno.dev/r/deno"
+curl "https://reddit-rss-api.sametcn99.deno.net/r/deno"
 ```
 
 ### Merge Two Subreddits and Return Only Image Posts
 
 ```bash
-curl "https://reddit-rss-api.deno.dev/r/deno+typescript?merge=true&filter=image"
+curl "https://reddit-rss-api.sametcn99.deno.net/r/deno+typescript?merge=true&filter=image"
 ```
 
 ### Get a Random Video Post with Old Reddit Links
 
 ```bash
-curl "https://reddit-rss-api.deno.dev/r/memes+videos?filter=video&option=random&old_reddit=true"
+curl "https://reddit-rss-api.sametcn99.deno.net/r/memes+videos?filter=video&option=random&old_reddit=true"
 ```
 
 ### Limit the Response to Five Items, Sorted Descending
 
 ```bash
-curl "https://reddit-rss-api.deno.dev/r/pics?sort=desc&count=5"
+curl "https://reddit-rss-api.sametcn99.deno.net/r/pics?sort=desc&count=5"
 ```
 
 ## Error Handling

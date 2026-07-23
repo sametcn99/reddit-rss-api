@@ -56,8 +56,8 @@ export async function mergedSubreddits(
 		let data: ResponseData = {
 			title: `Merged feed for ${subreddits.join(' + ')}`,
 			lastBuildDate: new Date(),
-			link: `https://reddit-rss-api.deno.dev/r/${pathnames}`,
-			feedUrl: 'https://reddit-rss-api.deno.dev/',
+			link: `https://reddit-rss-api.sametcn99.deno.net/r/${pathnames}`,
+			feedUrl: 'https://reddit-rss-api.sametcn99.deno.net/',
 			items: [],
 		};
 

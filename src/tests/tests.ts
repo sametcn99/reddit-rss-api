@@ -35,7 +35,7 @@ Deno.test('isSubredditPath should validate subreddit paths', () => {
 
 Deno.test('extractQueryParams should return correct query parameters', () => {
 	const url = new URL(
-		'https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey?merge=true&filter=image&old_reddit=true',
+		'https://reddit-rss-api.sametcn99.deno.net/r/memes+dankmemes+turkey?merge=true&filter=image&old_reddit=true',
 	);
 	const queryParams = getQueryParams(url);
 	assertEquals(queryParams.merge, 'true');
@@ -51,7 +51,7 @@ Deno.test(
 	'extractQueryParams should return empty object for no query parameters',
 	() => {
 		const url = new URL(
-			'https://reddit-rss-api.deno.dev/r/memes+dankmemes+turkey',
+			'https://reddit-rss-api.sametcn99.deno.net/r/memes+dankmemes+turkey',
 		);
 		const queryParams = getQueryParams(url);
 		assertEquals(queryParams, {
