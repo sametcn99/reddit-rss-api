@@ -1,8 +1,8 @@
 {
 	"lock": false,
 	"tasks": {
-		"start": "deno run -A index.ts --port 8001",
-		"dev": "deno run -A --watch index.ts --port 8001",
+		"start": "deno run -A index.ts --port 8000",
+		"dev": "deno run -A --watch index.ts --port 8000",
 		"test": "deno test -A src/tests/tests.ts",
 		"format": "deno fmt ."
 	},
