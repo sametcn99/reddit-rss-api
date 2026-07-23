@@ -1,7 +1,7 @@
 import { parseRSSFeed } from './fetch.ts';
 import { isNumber, mergedSubreddits } from './utils.ts';
 import {
-	constrsuctMergedFeedUrls,
+	constructMergedFeedUrls,
 	constructRedditFeedUrl,
 } from './validators.ts';
 
@@ -18,13 +18,17 @@ export function handleFilter(data: ResponseData, filter: string): ResponseData {
 	}
 
 	data.items = data.items.filter((item) => {
-		if (filters.has('image') && item.images && item.images.length > 0) {
-			return true;
+		if (
+			filters.has('image') && (!item.images || item.images.length === 0)
+		) {
+			return false;
 		}
-		if (filters.has('video') && item.videos && item.videos.length > 0) {
-			return true;
+		if (
+			filters.has('video') && (!item.videos || item.videos.length === 0)
+		) {
+			return false;
 		}
-		return false;
+		return true;
 	});
 	return data;
 }
@@ -61,14 +65,6 @@ export function handleSort(data: ResponseData, sort: string): ResponseData {
 	return data;
 }
 
-export function handleMerge(
-	feedUrls: string[],
-	path: string,
-	useOldReddit = false,
-) {
-	return mergedSubreddits(feedUrls, path, useOldReddit);
-}
-
 export function getQueryParams(url: URL): {
 	option: string | null;
 	sort: string | null;
@@ -86,6 +82,9 @@ export function getQueryParams(url: URL): {
 	if (count !== null) {
 		if (isNumber(count)) {
 			count = Number(count);
+			if (count < 1) {
+				throw new Error('Count must be greater than or equal to 1.');
+			}
 		} else {
 			throw new Error('Count must be a number.');
 		}
@@ -116,7 +115,7 @@ export async function handleResponse(
 	let data: ResponseData;
 
 	if (merge === 'true') {
-		const feedUrls = constrsuctMergedFeedUrls(pathnames[1], useOldReddit);
+		const feedUrls = constructMergedFeedUrls(pathnames[1], useOldReddit);
 		data = await mergedSubreddits(feedUrls, pathnames[1], useOldReddit);
 	} else if (merge !== null && merge !== 'false') {
 		throw new Error("Invalid merge option. Use 'true' as merge option.");

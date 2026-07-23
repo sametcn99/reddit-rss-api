@@ -1,18 +1,4 @@
 /**
- * Checks if a given string is a valid URL.
- * @param string - The string to be validated.
- * @returns A boolean indicating whether the string is a valid URL or not.
- */
-export function isValidUrl(string: string) {
-	try {
-		new URL(string);
-		return true;
-	} catch (_) {
-		return false;
-	}
-}
-
-/**
  * Checks if the given pathnames represent a subreddit path.
  *
  * @param pathnames - An array of pathnames.
@@ -38,16 +24,6 @@ export function constructRedditFeedUrl(
 }
 
 /**
- * Checks if the given pathnames represent multiple subreddits.
- *
- * @param pathnames - An array of pathnames.
- * @returns A boolean indicating whether the pathnames represent multiple subreddits.
- */
-export function checkForMultipleSubreddits(pathnames: string[]): boolean {
-	return pathnames[1].includes('+');
-}
-
-/**
  * Extracts the individual subreddits from the given pathnames.
  *
  * @param pathnames - An array of pathnames.
@@ -57,7 +33,7 @@ export function extractSubreddits(pathnames: string): string[] {
 	return pathnames.split('+');
 }
 
-export function constrsuctMergedFeedUrls(
+export function constructMergedFeedUrls(
 	subreddits: string,
 	useOldReddit = false,
 ): string[] {

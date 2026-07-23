@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import { extractItems, mapToOldReddit } from './extracters.ts';
+import { TimeoutError, UpstreamError } from './utils.ts';
 
 const parser = new Parser();
 const FETCH_TIMEOUT_MS = 10_000;
@@ -27,7 +28,7 @@ export async function parseRSSFeed(
 		});
 
 		if (!response.ok) {
-			throw new Error(
+			throw new UpstreamError(
 				`Failed to fetch the RSS feed (HTTP ${response.status}).`,
 			);
 		}
@@ -36,7 +37,7 @@ export async function parseRSSFeed(
 		const feed = (await parser.parseString(data)) as unknown as Feed;
 
 		if (!feed.items?.length) {
-			throw new Error('Failed to fetch the RSS feed.');
+			throw new UpstreamError('Failed to fetch the RSS feed.');
 		}
 
 		const extractedItems = extractItems(feed.items, feed, useOldReddit);
@@ -63,9 +64,12 @@ export async function parseRSSFeed(
 		return result;
 	} catch (error) {
 		if (error instanceof DOMException && error.name === 'TimeoutError') {
-			throw new Error('RSS feed request timed out.');
+			throw new TimeoutError('RSS feed request timed out.');
 		}
-		throw new Error(
+		if (error instanceof UpstreamError || error instanceof TimeoutError) {
+			throw error;
+		}
+		throw new UpstreamError(
 			error instanceof Error
 				? error.message
 				: 'Failed to fetch the RSS feed.',

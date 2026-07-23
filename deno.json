@@ -7,10 +7,17 @@
 		"format": "deno fmt ."
 	},
 	"compilerOptions": {
-		"lib": ["dom", "dom.iterable", "esnext", "deno.ns"],
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext",
+			"deno.ns"
+		],
 		"strict": true,
 		"checkJs": true,
-		"types": ["./src/types/types.d.ts"]
+		"types": [
+			"./src/types/types.d.ts"
+		]
 	},
 	"fmt": {
 		"useTabs": true,
@@ -19,16 +26,34 @@
 		"semiColons": true,
 		"singleQuote": true,
 		"proseWrap": "preserve",
-		"include": ["src/", "*.*"],
-		"exclude": ["src/testdata/", "src/fixtures/**/*.ts"]
+		"include": [
+			"src/",
+			"*.*"
+		],
+		"exclude": [
+			"src/testdata/",
+			"src/fixtures/**/*.ts"
+		]
 	},
 	"lint": {
-		"include": ["src/", "*.*"],
-		"exclude": ["src/testdata/", "src/fixtures/**/*.ts"],
+		"include": [
+			"src/",
+			"*.*"
+		],
+		"exclude": [
+			"src/testdata/",
+			"src/fixtures/**/*.ts"
+		],
 		"rules": {
-			"tags": ["recommended"],
-			"include": ["ban-untagged-todo"],
-			"exclude": ["no-unused-vars"]
+			"tags": [
+				"recommended"
+			],
+			"include": [
+				"ban-untagged-todo"
+			],
+			"exclude": [
+				"no-unused-vars"
+			]
 		}
 	},
 	"imports": {

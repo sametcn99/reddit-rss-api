@@ -1,17 +1,45 @@
 import { corsHeaders } from '../lib/lib.ts';
 import { parseRSSFeed } from './fetch.ts';
 
+export class UpstreamError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'UpstreamError';
+	}
+}
+
+export class TimeoutError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'TimeoutError';
+	}
+}
+
+/**
+ * Sends a response with the provided data and status code.
+ */
+export function sendResponse(
+	data: unknown,
+	status: number,
+	contentType: string,
+): Response {
+	return new Response(
+		typeof data === 'string' ? data : JSON.stringify(data),
+		{
+			status,
+			headers: {
+				'Content-Type': contentType,
+				...corsHeaders,
+			},
+		},
+	);
+}
+
 /**
  * Sends a bad request response.
  */
 export function sendBadRequestResponse(error?: string): Response {
-	return new Response(error, {
-		status: 400,
-		headers: {
-			'Content-Type': 'text/plain',
-			...corsHeaders,
-		},
-	});
+	return sendResponse(error, 400, 'text/plain');
 }
 
 /**
@@ -20,12 +48,7 @@ export function sendBadRequestResponse(error?: string): Response {
 export function sendOKResponse(
 	data: ExtractedItem | ResponseData[] | ResponseData | string,
 ): Response {
-	return new Response(JSON.stringify(data), {
-		headers: {
-			'Content-Type': 'application/json',
-			...corsHeaders,
-		},
-	});
+	return sendResponse(data, 200, 'application/json');
 }
 
 export async function mergedSubreddits(
