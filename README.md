@@ -3,8 +3,6 @@
 A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.
 
 > [!CAUTION]
-> **We've moved!** This project was originally deployed for free on Deno's _classic_ deploy platform. Honestly, I never expected anyone to use it. But somehow it grew to **~30,000 requests/month** (!), so to keep things running I've migrated it to Deno's new deploy platform.
->
 > The old domain (`reddit-rss-api.deno.dev`) will lose access on **July 20, 2026**. Please update your bookmarks and requests to the new home:
 >
 > **[reddit-rss-api.sametcn99.deno.net](https://reddit-rss-api.sametcn99.deno.net/)**
