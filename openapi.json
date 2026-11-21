@@ -1,8 +1,8 @@
 {
 	"openapi": "3.0.0",
 	"info": {
-		"title": "Reddit RSS API",
-		"description": "A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.\n\n### Key Features\n- **Multi-Subreddit Merging**: Consolidate multiple subreddits into a single feed.\n- **Media Filtering**: Filter by images or videos via query parameters.\n- **Flexible Sorting**: Sort items by date (`asc`, `desc`) or shuffle them (`mixed`).\n- **Zero Dependencies**: Built with Deno and TypeScript for high performance.\n\n### Quick Usage\n```bash\ncurl \"https://reddit-rss-api.sametcn99.deno.net/r/deno+typescript?merge=true&filter=image\"\n```\n\n### Resources\n- **GitHub Repository**: [sametcn99/reddit-rss-api](https://github.com/sametcn99/reddit-rss-api)\n- **Live API**: [https://reddit-rss-api.sametcn99.deno.net](https://reddit-rss-api.sametcn99.deno.net)",
+		"title": "Reddit RSS API (discontinued)",
+		"description": "This project is discontinued and is no longer maintained. Reddit feed endpoints no longer work. This specification is retained for historical reference.\n\nReddit retired RSS feeds, announcing November 13, 2026 as the end-of-support date. See [Reddit's announcement](https://support.reddithelp.com/hc/en-us/articles/55472297340308-Changelog-November-10-2026).\n\nDeno Deploy, which hosts this service, is also scheduled to shut down in April 2027. Existing applications can continue running until then. See [Deno's announcement](https://deno.com/blog/cloudflare) and [shutdown notice](https://docs.deno.com/deploy/).\n\nThe API previously converted subreddit RSS feeds into JSON with filtering, sorting, merging, and random selection. During its last year of operation, it received approximately 30,000 requests per month. Moving to another host does not restore Reddit RSS access.\n\n[Source code and historical documentation](https://github.com/sametcn99/reddit-rss-api)",
 		"version": "1.0.0",
 		"contact": {
 			"name": "sametcn99",
@@ -12,18 +12,18 @@
 	"servers": [
 		{
 			"url": "https://reddit-rss-api.sametcn99.deno.net",
-			"description": "Production server"
+			"description": "Former hosted service (discontinued; Reddit feeds no longer work)"
 		},
 		{
 			"url": "http://localhost:8000",
-			"description": "Local development server"
+			"description": "Historical local development server (Reddit RSS access is unavailable)"
 		}
 	],
 	"paths": {
 		"/r/{subreddits}": {
 			"get": {
-				"summary": "Fetch RSS-derived JSON for subreddits",
-				"description": "Fetches and processes Reddit RSS feeds for one or more subreddits. Supports filtering by media type, sorting, merging multiple subreddit feeds, and fetching random posts.",
+				"summary": "Discontinued: fetch RSS-derived JSON for subreddits",
+				"description": "This endpoint no longer provides working Reddit feeds because Reddit retired RSS support. The parameters and response schemas below document its former behavior only.",
 				"operationId": "getSubreddits",
 				"parameters": [
 					{
@@ -255,7 +255,8 @@
 							}
 						}
 					}
-				}
+				},
+				"deprecated": true
 			}
 		}
 	},

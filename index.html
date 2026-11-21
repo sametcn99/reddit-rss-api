@@ -1,100 +1,164 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>Reddit RSS API | Documentation</title>
+		<title>Reddit RSS API | Discontinued</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description"
-			content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON." />
-		<meta name="keywords"
-			content="reddit, rss, api, json, deno, documentation" />
+		<meta
+			name="description"
+			content="Reddit RSS API has been discontinued following Reddit's RSS retirement and the announced Deno Deploy shutdown. Source code and historical documentation remain available."
+		/>
 		<meta name="robots" content="index, follow" />
 		<meta name="author" content="sametcn99" />
+		<meta name="color-scheme" content="dark" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-
-		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url"
-			content="https://reddit-rss-api.sametcn99.deno.net/" />
-		<meta property="og:title" content="Reddit RSS API | Documentation" />
+		<meta
+			property="og:url"
+			content="https://reddit-rss-api.sametcn99.deno.net/"
+		/>
+		<meta property="og:title" content="Reddit RSS API | Discontinued" />
 		<meta
 			property="og:description"
-			content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging."
+			content="This project is no longer maintained. Reddit retired RSS feeds, and Deno Deploy is scheduled to shut down in April 2027."
 		/>
-		<meta property="og:image"
-			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico" />
-
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url"
-			content="https://reddit-rss-api.sametcn99.deno.net/" />
-		<meta property="twitter:title"
-			content="Reddit RSS API | Documentation" />
 		<meta
-			property="twitter:description"
-			content="A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON with filtering, sorting, and merging."
+			property="og:image"
+			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico"
 		/>
-		<meta property="twitter:image"
-			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="Reddit RSS API | Discontinued" />
+		<meta
+			name="twitter:description"
+			content="This project is no longer maintained. Reddit retired RSS feeds, and Deno Deploy is scheduled to shut down in April 2027."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://reddit-rss-api.sametcn99.deno.net/favicon.ico"
+		/>
 		<style>
-		body {
-			margin: 0;
-		}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: #11111b;
+				color: #d5d5df;
+				font-family: system-ui, -apple-system, sans-serif;
+				line-height: 1.7;
+			}
+			main {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 56px 24px;
+			}
+			.status {
+				display: inline-block;
+				margin: 0;
+				padding: 4px 12px;
+				border: 1px solid #985366;
+				border-radius: 6px;
+				color: #ffb5c5;
+				font-size: 0.875rem;
+				font-weight: 600;
+			}
+			h1, h2, strong {
+				color: #f4f4f8;
+			}
+			h1 {
+				margin: 16px 0;
+				font-size: clamp(2rem, 6vw, 3rem);
+				line-height: 1.2;
+			}
+			h2 {
+				margin-top: 32px;
+				font-size: 1.25rem;
+			}
+			a {
+				color: #b9b4ff;
+				text-underline-offset: 3px;
+				overflow-wrap: anywhere;
+			}
+			a:hover {
+				color: #e0ddff;
+			}
+			a:focus-visible {
+				outline: 2px solid #b9b4ff;
+				outline-offset: 4px;
+			}
+			li + li {
+				margin-top: 16px;
+			}
+			.usage {
+				margin: 24px 0;
+				padding: 16px 20px;
+				border-left: 3px solid #b9b4ff;
+				background: #1b1b2b;
+			}
+			footer {
+				margin-top: 36px;
+				padding-top: 20px;
+				border-top: 1px solid #353545;
+				color: #aaaab9;
+				font-size: 0.875rem;
+			}
 		</style>
-		<script defer src="https://umami.sametcc.me/script.js"
-			data-website-id="276eaa1b-b400-4185-a887-3371fc7ee745"></script>
+		<script
+			defer
+			src="https://umami.sametcc.me/script.js"
+			data-website-id="276eaa1b-b400-4185-a887-3371fc7ee745"
+		></script>
 	</head>
 	<body>
-		<div
-			id="migration-notice"
-			style="
-        background: #1a1a2e;
-        border-bottom: 1px solid #333;
-        padding: 8px 16px;
-        font-family:
-          system-ui,
-          -apple-system,
-          sans-serif;
-        color: #aaa;
-        font-size: 0.8rem;
-        line-height: 1.4;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      "
-		>
-			<span style="flex: 1">
-        <strong style="color: #e94560">We've moved!</strong>
-        This project migrated to Deno's new deploy platform. The old domain (<code>reddit-rss-api.deno.dev</code>) will lose access on
-        <strong>July 20, 2026</strong>. New home:
-        <a href="https://reddit-rss-api.sametcn99.deno.net/" style="color: #e94560">reddit-rss-api.sametcn99.deno.net</a>
-      </span>
-			<button
-				onclick="document.getElementById('migration-notice').remove()"
-				style="background: none; border: none; color: #666; cursor: pointer; font-size: 1.1rem; padding: 0 4px; line-height: 1"
-				title="Dismiss"
-			>
-        &times;
-      </button>
-		</div>
-		<script
-			id="api-reference"
-			data-url="/openapi.json"
-			data-configuration='{
-				"theme": "deepSpace",
-				"layout": "modern",
-				"showSidebar": true,
-				"searchHotKey": "k",
-				"defaultHttpClient": {
-					"targetKey": "shell",
-					"clientKey": "curl"
-				},
-				"spec": {
-					"url": "/openapi.json"
-				}
-			}'
-		></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+		<main>
+			<p class="status">Project discontinued</p>
+			<h1>Reddit RSS API</h1>
+			<p>
+				This project is no longer maintained. It converted Reddit subreddit
+				RSS feeds into JSON, with filtering, sorting, merging, and random
+				selection. <strong>The API no longer provides working Reddit feeds.</strong>
+			</p>
+			<p class="usage">
+				During its last year of operation, the API received approximately
+				<strong>30,000 requests per month</strong>.
+				Thank you to everyone who used the service.
+			</p>
+			<h2>Why the project has ended</h2>
+			<ul>
+				<li>
+					<strong>Reddit retired RSS feeds.</strong> Reddit announced
+					<time datetime="2026-11-13">November 13, 2026</time> as the
+					end-of-support date, removing the data source this API depends on.
+					Reddit states that there is no replacement for feeds outside
+					communities you moderate.
+					<a href="https://support.reddithelp.com/hc/en-us/articles/55472297340308-Changelog-November-10-2026">Read Reddit's announcement</a>.
+				</li>
+				<li>
+					<strong>Deno Deploy is being shut down.</strong> The platform
+					hosting this service is scheduled to close in
+					<time datetime="2027-04">April 2027</time>. Existing applications
+					can continue running until then, but this API can no longer fetch
+					Reddit RSS feeds.
+					<a href="https://deno.com/blog/cloudflare">Read Deno's announcement</a>
+					and the <a href="https://docs.deno.com/deploy/">shutdown notice</a>.
+				</li>
+			</ul>
+			<p>
+				Moving this code to another host does not restore Reddit's retired
+				RSS feeds. No further maintenance or support is planned.
+			</p>
+			<h2>Source code and historical documentation</h2>
+			<p>
+				The code and original API specification remain available for
+				reference. The old examples and endpoints are no longer functional.
+			</p>
+			<ul>
+				<li><a href="https://github.com/sametcn99/reddit-rss-api">View the repository and historical README</a></li>
+				<li><a href="./openapi.json">View the historical OpenAPI specification</a></li>
+			</ul>
+			<footer>
+				Status updated <time datetime="2026-11-21">November 21, 2026</time>.
+			</footer>
+		</main>
 	</body>
 </html>

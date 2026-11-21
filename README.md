@@ -1,17 +1,34 @@
-# Reddit RSS API
+# Reddit RSS API (discontinued)
 
-A Deno-powered HTTP service that turns Reddit subreddit RSS feeds into structured JSON, complete with filtering, sorting, merging, and random selection utilities.
+A Deno-powered HTTP service that converted Reddit subreddit RSS feeds into structured JSON, with filtering, sorting, merging, and random selection utilities.
 
 > [!CAUTION]
-> The old domain (`reddit-rss-api.deno.dev`) will lose access on **July 20, 2026**. Please update your bookmarks and requests to the new home:
->
-> **[reddit-rss-api.sametcn99.deno.net](https://reddit-rss-api.sametcn99.deno.net/)**
+> **This project is discontinued and is no longer maintained.** Reddit feed endpoints no longer work. The source code and API documentation are retained for historical reference.
+
+## Why this project is discontinued
+
+- **Reddit retired RSS feeds.** Reddit announced **November 13, 2026** as the end-of-support date. This removed the data source the API depends on. Reddit states that there is no replacement for RSS feeds outside communities you moderate. See [Reddit's official announcement](https://support.reddithelp.com/hc/en-us/articles/55472297340308-Changelog-November-10-2026).
+- **Deno Deploy is being shut down.** The platform hosting this service is scheduled to close in **April 2027**. Existing applications can continue running until then, but this API can no longer fetch Reddit RSS feeds. See the [Deno announcement](https://deno.com/blog/cloudflare) and [shutdown notice](https://docs.deno.com/deploy/).
+
+The project previously moved from `reddit-rss-api.deno.dev` to `reddit-rss-api.sametcn99.deno.net` following the [Deno Deploy Classic shutdown on July 20, 2026](https://docs.deno.com/deploy/classic/deployments/). The current Deno Deploy shutdown is a separate, upcoming change.
+
+Moving the code to another host does not restore Reddit's retired RSS feeds. The former hosted address may remain reachable temporarily, but it is no longer a supported API.
+
+Status updated: **November 21, 2026**.
+
+## Usage
+
+During its last year of operation, the API received approximately **30,000 requests per month**. Thank you to everyone who used the service.
 
 ## Resources
 
-- [GitHub Repository](https://github.com/sametcn99/reddit-rss-api)
-- [Live API & Documentation](https://reddit-rss-api.sametcn99.deno.net/)
-- [GitHub Issues](https://github.com/sametcn99/reddit-rss-api/issues)
+- [Source Code](https://github.com/sametcn99/reddit-rss-api)
+- [Discontinuation Notice (former hosted service)](https://reddit-rss-api.sametcn99.deno.net/)
+- [Historical OpenAPI Specification](./openapi.json)
+
+## Historical documentation
+
+The sections below describe the API before Reddit retired RSS support. Endpoints, examples, and setup instructions are preserved for reference and no longer provide working Reddit feeds.
 
 ## Table of Contents
 
@@ -114,12 +131,7 @@ curl "https://reddit-rss-api.sametcn99.deno.net/r/pics?sort=desc&count=5"
 
 ## Development
 
-To contribute to the project, follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and ensure all tests pass.
-4. Submit a pull request describing your changes.
+The following commands describe the original development workflow. They are retained for reference; running or self-hosting the code does not restore Reddit RSS access. No further maintenance or support is planned.
 
 ### Quick Start
 
@@ -148,4 +160,4 @@ Run the full suite with:
 deno task test
 ```
 
-> Tests rely on live Reddit RSS endpoints; ensure you have network access when executing them.
+> Some tests depend on live Reddit RSS endpoints and are expected to fail following Reddit's RSS retirement. They are preserved as historical reference, not as a current service-health check.
